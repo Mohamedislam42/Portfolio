@@ -53,10 +53,8 @@ export const projects: Project[] = [
     techniques: ['A* Search', 'Dijkstra\'s Algorithm', 'Dynamic Programming', 'Traffic Prediction ML'],
     techStack: ['Python', 'Scikit-Learn', 'Flask', 'Docker', 'Leaflet.js'],
     links: [
-      // TODO: Replace with real GitHub repository URL
-      { type: 'github', url: 'https://github.com/Mohamedislam42/cairo-transport-routing', label: 'GitHub Repo' },
-      // TODO: Replace with live demo URL if deployed
-      { type: 'demo', url: 'https://cairo-transport-demo.vercel.app', label: 'Live Demo' },
+      { type: 'github', url: 'https://github.com/Mohamedislam42/Cairo-Transportation-System', label: 'GitHub Repo' },
+      { type: 'demo', url: 'https://lnkd.in/e6VZapAw', label: 'Live Demo' },
     ],
     featured: true,
   },
