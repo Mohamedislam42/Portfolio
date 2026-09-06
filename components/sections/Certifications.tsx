@@ -1,0 +1,57 @@
+'use client';
+
+import React from 'react';
+import { SectionHeading } from '@/components/ui/SectionHeading';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
+import { Card } from '@/components/ui/Card';
+import { certifications } from '@/data/certifications';
+import { Award, ExternalLink } from 'lucide-react';
+
+export function Certifications() {
+  return (
+    <section id="certifications" className="py-24 px-6 bg-surface">
+      <div className="max-w-7xl mx-auto">
+        <SectionHeading index={5} kicker="Certifications" title="Courses & credentials" />
+
+        <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {certifications.map((cert, index) => (
+            <ScrollReveal key={cert.id} delay={0.1 * (index + 1)}>
+              <a
+                href={cert.verifyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Verify certificate: ${cert.title}`}
+                className="group block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-xl"
+              >
+                <Card 
+                  hoverable 
+                  glowOnHover 
+                  className="p-6 bg-elevated/70 border-line h-full flex items-start gap-4 transition-all duration-300 group-hover:border-accent/60"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent flex-shrink-0 group-hover:scale-105 transition-transform">
+                    <Award className="w-6 h-6" />
+                  </div>
+                  
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-heading text-h4 text-fg font-semibold group-hover:text-accent transition-colors leading-snug">
+                      {cert.title}
+                    </h3>
+                    <div className="flex items-center gap-2 mt-2 font-mono text-mono-label text-fg-secondary">
+                      <span className="text-accent/90">{cert.issuer}</span>
+                      <span className="text-fg-muted">•</span>
+                      <span>{cert.platform}</span>
+                    </div>
+                  </div>
+
+                  <div className="text-fg-muted group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all flex-shrink-0 mt-1 p-1">
+                    <ExternalLink size={18} />
+                  </div>
+                </Card>
+              </a>
+            </ScrollReveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
