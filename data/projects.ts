@@ -54,7 +54,7 @@ export const projects: Project[] = [
     techStack: ['Python', 'Scikit-Learn', 'Flask', 'Docker', 'Leaflet.js'],
     links: [
       { type: 'github', url: 'https://github.com/Mohamedislam42/Cairo-Transportation-System', label: 'GitHub Repo' },
-      { type: 'demo', url: 'https://lnkd.in/e6VZapAw', label: 'Live Demo' },
+      { type: 'demo', url: 'https://intelligent-cairo-transportation-system.vercel.app/', label: 'Live Demo' },
     ],
     featured: true,
   },
