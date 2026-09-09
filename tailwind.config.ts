@@ -18,9 +18,9 @@ const config: Config = {
           muted: 'rgba(94, 234, 212, 0.5)',
         },
         fg: {
-          DEFAULT: '#F4F4F6',
-          secondary: '#9CA3AF',
-          muted: '#6B7280',
+          DEFAULT: '#FFFFFF',
+          secondary: '#CBD5E1',
+          muted: '#94A3B8',
         },
         success: '#34D399',
         error: '#F87171',

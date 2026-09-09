@@ -1,39 +1,23 @@
 'use client';
 
+import React from 'react';
 import dynamic from 'next/dynamic';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ChevronDown, Download, Github, Linkedin } from 'lucide-react';
+import { ChevronDown, Download, Github, Linkedin, Sparkles, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { socialLinks } from '@/data/navigation';
 import { scrollToSection } from '@/lib/utils';
 
 const HeroBackground = dynamic(() => import('./HeroBackground'), { ssr: false });
 
-const HEADLINES = [
-  'Building intelligent systems, end to end.',
-  'I turn data into deployed intelligence.',
-  'From model training to production deployment.',
+const METRICS_PILLS = [
+  { label: 'LoRA Param Reduction', value: '97.85%' },
+  { label: 'Distilled Macro F1', value: '0.8962' },
+  { label: 'Cairo Route Latency', value: '< 120ms' },
+  { label: 'Attention Mechanism', value: '80% Attn / 20% Mean' },
 ];
-// Currently using index 0 — change to pick a different headline
-const ACTIVE_HEADLINE = 0;
 
-const renderHeadline = (headline: string) => {
-  if (headline.includes('intelligent')) {
-    const parts = headline.split('intelligent');
-    return (
-      <>
-        {parts[0]}
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-teal-200">
-          intelligent
-        </span>
-        {parts[1]}
-      </>
-    );
-  }
-  return headline;
-};
-
-export function Hero() {
+export function Hero({ onOpenResume }: { onOpenResume?: () => void }) {
   const shouldReduceMotion = useReducedMotion();
 
   const containerVariants = {
@@ -53,56 +37,86 @@ export function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-base">
+    <section className="relative min-h-[92vh] sm:min-h-screen flex items-center justify-center overflow-hidden bg-base pt-20 sm:pt-24 pb-12 sm:pb-16">
       <HeroBackground />
-      
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 py-20 flex flex-col items-start justify-center">
+
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col items-start justify-center">
         <motion.div
           variants={containerVariants}
           initial={shouldReduceMotion ? 'visible' : 'hidden'}
           animate="visible"
           className="max-w-4xl"
         >
-          <motion.p 
+          {/* Status Badge */}
+          <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-2.5 sm:gap-3 mb-4 sm:mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface border border-accent/30 shadow-glow-sm">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+              <span className="font-mono text-[11px] sm:text-xs text-fg-secondary">
+                Open to ML & AI Roles (Graduating 2026)
+              </span>
+            </div>
+          </motion.div>
+
+          <motion.h1
             variants={itemVariants}
-            className="font-mono text-accent text-mono-label tracking-wider mb-4"
+            className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-fg leading-[1.15] max-w-4xl font-bold tracking-tight"
           >
-            Hi, I'm Mohamed —
-          </motion.p>
-          
-          <motion.h1 
-            variants={itemVariants}
-            className="font-heading text-display-sm md:text-display text-fg leading-tight max-w-4xl"
-          >
-            {renderHeadline(HEADLINES[ACTIVE_HEADLINE])}
+            Building{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-teal-200 to-emerald-300">
+              intelligent systems
+            </span>
+            , from research to production.
           </motion.h1>
-          
-          <motion.p 
+
+          <motion.p
             variants={itemVariants}
-            className="text-body-lg text-fg-secondary max-w-2xl mt-6"
+            className="text-sm sm:text-base md:text-lg text-fg-secondary max-w-2xl mt-4 sm:mt-6 leading-relaxed"
           >
-            Computer Science & AI student building NLP pipelines and full-stack AI applications — from model training to production deployment.
+            Computer Science & AI student at Al Alamein International University specializing in NLP pipelines, parameter-efficient fine-tuning (LoRA), knowledge distillation, and graph routing optimization.
           </motion.p>
-          
-          <motion.div 
+
+          {/* Action CTAs */}
+          <motion.div
             variants={itemVariants}
-            className="flex flex-col sm:flex-row gap-4 mt-8"
+            className="flex flex-wrap items-center gap-3 sm:gap-4 mt-6 sm:mt-8"
           >
-            <Button variant="primary" onClick={() => scrollToSection('projects')}>
-              View my work
+            <Button variant="primary" onClick={() => scrollToSection('ai-lab')} className="group font-mono text-xs sm:text-sm">
+              <Sparkles className="w-4 h-4 mr-1.5 text-base" />
+              Try Live AI Lab
+              <ArrowRight className="w-3.5 h-3.5 ml-1.5 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button variant="secondary" onClick={() => scrollToSection('contact')}>
-              Get in touch
+
+            <Button variant="secondary" onClick={() => scrollToSection('projects')} className="font-mono text-xs sm:text-sm">
+              View Projects
             </Button>
-            <Button variant="ghost" href="/resume.pdf" target="_blank" rel="noopener noreferrer">
-              <Download className="w-4 h-4 mr-2" />
-              Download Resume
+
+            <Button
+              variant="ghost"
+              onClick={onOpenResume ? onOpenResume : () => window.open('/resume.pdf', '_blank')}
+              className="font-mono text-xs sm:text-sm"
+            >
+              <Download className="w-4 h-4 mr-1.5" />
+              Resume
             </Button>
           </motion.div>
-          
-          <motion.div 
+
+          {/* Metrics Pills Banner */}
+          <motion.div
             variants={itemVariants}
-            className="flex gap-3 mt-8"
+            className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3.5 mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-line/60 w-full"
+          >
+            {METRICS_PILLS.map((pill, i) => (
+              <div key={i} className="p-2.5 sm:p-3.5 rounded-xl bg-surface/70 border border-line/80 backdrop-blur-sm">
+                <span className="block text-[10px] sm:text-[11px] font-mono text-fg-muted truncate">{pill.label}</span>
+                <span className="block text-sm sm:text-lg font-mono font-bold text-accent mt-0.5">{pill.value}</span>
+              </div>
+            ))}
+          </motion.div>
+
+          {/* Social icons */}
+          <motion.div
+            variants={itemVariants}
+            className="flex items-center gap-3 mt-6 sm:mt-8"
           >
             <Button variant="icon" href={socialLinks?.github || '#'} ariaLabel="GitHub">
               <Github className="w-5 h-5" />
@@ -114,13 +128,13 @@ export function Hero() {
         </motion.div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
-        <button 
+      <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-10">
+        <button
           onClick={() => scrollToSection('about')}
           aria-label="Scroll to about section"
           className="p-2 text-fg-secondary hover:text-accent transition-colors"
         >
-          <ChevronDown className={`w-6 h-6 ${shouldReduceMotion ? '' : 'animate-bounce-slow'}`} />
+          <ChevronDown className={`w-5 h-5 sm:w-6 sm:h-6 ${shouldReduceMotion ? '' : 'animate-bounce-slow'}`} />
         </button>
       </div>
     </section>

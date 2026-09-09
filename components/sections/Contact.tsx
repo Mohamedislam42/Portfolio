@@ -7,10 +7,18 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { socialLinks } from '@/data/navigation';
 import { isValidEmail } from '@/lib/utils';
-import { Mail, Phone, Linkedin, Github, MapPin, CheckCircle, Send } from 'lucide-react';
+import { Mail, Phone, Linkedin, Github, MapPin, CheckCircle, Send, Copy, Check } from 'lucide-react';
+import { useToast } from '@/components/ui/Toast';
 import { cn } from '@/lib/utils';
 
+const INQUIRY_PRESETS = [
+  { label: 'Discuss an ML/AI Role', subject: 'Opportunity Discussion: ML/AI Role', text: 'Hi Mohamed, I came across your portfolio and would love to discuss an AI/ML engineering opportunity with our team.' },
+  { label: 'Project Collaboration', subject: 'NLP & Systems Collaboration', text: 'Hi Mohamed, I saw your work on LoRA distillation and Cairo routing, and I would love to explore collaborating on a project.' },
+  { label: 'General Inquiry', subject: 'Hello from your portfolio', text: 'Hi Mohamed, I really enjoyed exploring your interactive AI lab and wanted to connect!' },
+];
+
 export function Contact() {
+  const { showToast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,6 +26,7 @@ export function Contact() {
     honeypot: '',
   });
   
+  const [copiedField, setCopiedField] = useState<'email' | 'phone' | null>(null);
   const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({});
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [statusMessage, setStatusMessage] = useState('');
@@ -26,11 +35,24 @@ export function Contact() {
   const emailInputRef = useRef<HTMLInputElement>(null);
   const messageInputRef = useRef<HTMLTextAreaElement>(null);
 
+  const handleCopy = (text: string, field: 'email' | 'phone') => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(field);
+    showToast(`Copied ${field === 'email' ? 'email address' : 'phone number'} to clipboard!`, 'success');
+    setTimeout(() => setCopiedField(null), 2500);
+  };
+
+  const handleSelectPreset = (presetText: string) => {
+    setFormData((prev) => ({ ...prev, message: presetText }));
+    messageInputRef.current?.focus();
+    showToast('Inquiry template loaded into message box', 'info');
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name as keyof typeof errors]) {
-      setErrors(prev => ({ ...prev, [name]: undefined }));
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };
 
@@ -89,29 +111,51 @@ export function Contact() {
 
       if (response.ok) {
         setStatus('success');
-        setStatusMessage("Thanks for reaching out! I'll get back to you soon.");
+        setStatusMessage("Thanks for reaching out! I'll get back to you promptly.");
+        showToast('Message sent successfully! Thank you.', 'success');
         setFormData({ name: '', email: '', message: '', honeypot: '' });
       } else {
         setStatus('error');
         setStatusMessage("Something went wrong. Please try again or email me directly.");
+        showToast('Failed to send message. Please email me directly.', 'error');
       }
     } catch (error) {
       setStatus('error');
       setStatusMessage("Something went wrong. Please try again or email me directly.");
+      showToast('Failed to send message. Please email me directly.', 'error');
     }
   };
 
   return (
-    <section id="contact" className="py-24 px-6 bg-base">
+    <section id="contact" className="py-16 sm:py-24 px-4 sm:px-6 bg-base">
       <div className="max-w-7xl mx-auto">
-        <SectionHeading index={6} kicker="Contact" title="Get in touch" />
+        <SectionHeading index={7} kicker="Get In Touch" title="Let's Build Something Intelligent" />
 
-        <div className="mt-12 grid grid-cols-1 lg:grid-cols-5 gap-12">
+        <div className="mt-8 sm:mt-12 grid grid-cols-1 lg:grid-cols-5 gap-8 sm:gap-12">
           {/* Left column - Form */}
           <div className="lg:col-span-3">
             <ScrollReveal delay={0.1}>
-              <Card className="p-6 md:p-8 bg-surface border-line relative overflow-hidden">
-                <form onSubmit={handleSubmit} className="space-y-6">
+              <Card className="p-5 sm:p-6 md:p-8 bg-surface border-line relative overflow-hidden">
+                {/* Inquiry presets */}
+                <div className="mb-5 sm:mb-6 pb-5 sm:pb-6 border-b border-line">
+                  <span className="text-xs font-mono text-accent uppercase tracking-wider block mb-2.5">
+                    Quick Message Presets:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                    {INQUIRY_PRESETS.map((preset, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => handleSelectPreset(preset.text)}
+                        className="text-[11px] sm:text-xs font-mono px-2.5 sm:px-3 py-1.5 rounded-lg bg-elevated border border-line hover:border-accent/50 text-fg-secondary hover:text-accent transition-colors text-left"
+                      >
+                        {preset.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                   {/* Honeypot */}
                   <input
                     type="text"
@@ -125,8 +169,8 @@ export function Contact() {
                   />
 
                   <div>
-                    <label htmlFor="name" className="text-sm font-medium text-fg-secondary mb-2 block font-mono">
-                      Name
+                    <label htmlFor="name" className="text-xs sm:text-sm font-medium text-fg-secondary mb-1.5 block font-mono">
+                      Your Name
                     </label>
                     <input
                       ref={nameInputRef}
@@ -138,10 +182,10 @@ export function Contact() {
                       aria-invalid={!!errors.name}
                       aria-describedby={errors.name ? 'name-error' : undefined}
                       className={cn(
-                        "w-full bg-elevated border border-line rounded-lg px-4 py-3 text-fg placeholder:text-fg-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent transition-colors",
+                        "w-full bg-elevated border border-line rounded-lg px-3.5 sm:px-4 py-2.5 sm:py-3 text-fg placeholder:text-fg-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent transition-colors text-base sm:text-sm font-body",
                         errors.name && "border-error focus:border-error focus:ring-error"
                       )}
-                      placeholder="Your name"
+                      placeholder="e.g. Alex Morgan"
                     />
                     {errors.name && (
                       <p id="name-error" className="text-error text-xs font-mono mt-1.5">
@@ -151,8 +195,8 @@ export function Contact() {
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="text-sm font-medium text-fg-secondary mb-2 block font-mono">
-                      Email
+                    <label htmlFor="email" className="text-xs sm:text-sm font-medium text-fg-secondary mb-1.5 block font-mono">
+                      Your Email Address
                     </label>
                     <input
                       ref={emailInputRef}
@@ -164,10 +208,10 @@ export function Contact() {
                       aria-invalid={!!errors.email}
                       aria-describedby={errors.email ? 'email-error' : undefined}
                       className={cn(
-                        "w-full bg-elevated border border-line rounded-lg px-4 py-3 text-fg placeholder:text-fg-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent transition-colors",
+                        "w-full bg-elevated border border-line rounded-lg px-3.5 sm:px-4 py-2.5 sm:py-3 text-fg placeholder:text-fg-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent transition-colors text-base sm:text-sm font-body",
                         errors.email && "border-error focus:border-error focus:ring-error"
                       )}
-                      placeholder="your.email@example.com"
+                      placeholder="alex.morgan@company.com"
                     />
                     {errors.email && (
                       <p id="email-error" className="text-error text-xs font-mono mt-1.5">
@@ -177,8 +221,8 @@ export function Contact() {
                   </div>
 
                   <div>
-                    <label htmlFor="message" className="text-sm font-medium text-fg-secondary mb-2 block font-mono">
-                      Message
+                    <label htmlFor="message" className="text-xs sm:text-sm font-medium text-fg-secondary mb-1.5 block font-mono">
+                      Your Message
                     </label>
                     <textarea
                       ref={messageInputRef}
@@ -190,10 +234,10 @@ export function Contact() {
                       aria-invalid={!!errors.message}
                       aria-describedby={errors.message ? 'message-error' : undefined}
                       className={cn(
-                        "w-full bg-elevated border border-line rounded-lg px-4 py-3 text-fg placeholder:text-fg-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent transition-colors resize-y",
+                        "w-full bg-elevated border border-line rounded-lg px-3.5 sm:px-4 py-2.5 sm:py-3 text-fg placeholder:text-fg-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent transition-colors resize-y text-base sm:text-sm font-body",
                         errors.message && "border-error focus:border-error focus:ring-error"
                       )}
-                      placeholder="How can I help you?"
+                      placeholder="Share project details, job opportunities, or inquiries..."
                     />
                     {errors.message && (
                       <p id="message-error" className="text-error text-xs font-mono mt-1.5">
@@ -205,31 +249,31 @@ export function Contact() {
                   <Button
                     type="submit"
                     variant="primary"
-                    className="w-full mt-4 flex items-center justify-center gap-2 font-mono"
+                    className="w-full mt-3 sm:mt-4 flex items-center justify-center gap-2 font-mono text-xs sm:text-sm"
                     disabled={status === 'loading' || status === 'success'}
                     isLoading={status === 'loading'}
                   >
                     {status === 'idle' || status === 'error' ? (
                       <>
-                        <Send size={16} />
-                        <span>Send Message</span>
+                        <Send size={15} />
+                        <span>Send Direct Dispatch</span>
                       </>
                     ) : status === 'loading' ? (
-                      'Sending...'
+                      'Dispatching...'
                     ) : (
                       <>
-                        <CheckCircle className="text-success" size={18} />
+                        <CheckCircle className="text-success" size={16} />
                         <span className="text-success">Message Sent!</span>
                       </>
                     )}
                   </Button>
 
-                  <div aria-live="polite" className="mt-4">
+                  <div aria-live="polite" className="mt-3 sm:mt-4">
                     {status === 'success' && (
-                      <p className="text-success text-sm text-center font-mono">{statusMessage}</p>
+                      <p className="text-success text-xs sm:text-sm text-center font-mono">{statusMessage}</p>
                     )}
                     {status === 'error' && (
-                      <p className="text-error text-sm text-center font-mono">{statusMessage}</p>
+                      <p className="text-error text-xs sm:text-sm text-center font-mono">{statusMessage}</p>
                     )}
                   </div>
                 </form>
@@ -237,75 +281,96 @@ export function Contact() {
             </ScrollReveal>
           </div>
 
-          {/* Right column - Direct Contact */}
+          {/* Right column - Direct Contact & 1-Click Copy */}
           <div className="lg:col-span-2">
             <ScrollReveal delay={0.2}>
-              <Card className="p-6 md:p-8 bg-surface border-line h-full flex flex-col justify-between">
-                <div className="space-y-6">
+              <Card className="p-5 sm:p-6 md:p-8 bg-surface border-line h-full flex flex-col justify-between">
+                <div className="space-y-5 sm:space-y-6">
                   <div>
-                    <h3 className="font-heading text-h4 text-fg font-semibold mb-2">
-                      Direct Channels
+                    <h3 className="font-heading text-lg sm:text-xl text-fg font-semibold mb-2">
+                      Direct Communication
                     </h3>
-                    <p className="text-body text-fg-secondary text-sm">
-                      Prefer a direct message? Reach out anytime through email, phone, or professional networks.
+                    <p className="text-body text-fg-secondary text-xs leading-relaxed">
+                      Prefer direct channels? Reach out anytime via email, phone, or professional networks. 1-click copy available for quick outreach.
                     </p>
                   </div>
 
-                  <ul className="space-y-3">
+                  <ul className="space-y-2.5 sm:space-y-3">
+                    {/* Email item */}
+                    <li>
+                      <div className="flex items-center justify-between p-2.5 sm:p-3 rounded-lg bg-elevated border border-line hover:border-accent/50 transition-colors">
+                        <a
+                          href="mailto:info.moislam@gmail.com"
+                          className="flex items-center gap-2.5 min-w-0 text-fg-secondary hover:text-accent transition-colors"
+                        >
+                          <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-accent shrink-0" />
+                          <span className="text-[11px] sm:text-xs font-mono truncate">info.moislam@gmail.com</span>
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => handleCopy('info.moislam@gmail.com', 'email')}
+                          className="p-1.5 text-fg-muted hover:text-accent hover:bg-surface rounded transition-colors shrink-0 ml-1.5"
+                          title="Copy email to clipboard"
+                          aria-label="Copy email"
+                        >
+                          {copiedField === 'email' ? <Check className="w-3.5 h-3.5 text-accent" /> : <Copy className="w-3.5 h-3.5" />}
+                        </button>
+                      </div>
+                    </li>
+
+                    {/* Phone item */}
+                    <li>
+                      <div className="flex items-center justify-between p-2.5 sm:p-3 rounded-lg bg-elevated border border-line hover:border-accent/50 transition-colors">
+                        <a
+                          href="tel:+201280806343"
+                          className="flex items-center gap-2.5 min-w-0 text-fg-secondary hover:text-accent transition-colors"
+                        >
+                          <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-accent shrink-0" />
+                          <span className="text-[11px] sm:text-xs font-mono">+20 128 080 6343</span>
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => handleCopy('+201280806343', 'phone')}
+                          className="p-1.5 text-fg-muted hover:text-accent hover:bg-surface rounded transition-colors shrink-0 ml-1.5"
+                          title="Copy phone to clipboard"
+                          aria-label="Copy phone"
+                        >
+                          {copiedField === 'phone' ? <Check className="w-3.5 h-3.5 text-accent" /> : <Copy className="w-3.5 h-3.5" />}
+                        </button>
+                      </div>
+                    </li>
+
+                    {/* LinkedIn */}
                     <li>
                       <a
-                        href="mailto:info.moislam@gmail.com"
-                        aria-label="Send email to info.moislam@gmail.com"
-                        className="flex items-center gap-3 p-3 rounded-lg bg-elevated hover:bg-elevated/80 border border-line hover:border-accent/50 transition-colors text-fg-secondary hover:text-accent group"
+                        href={socialLinks.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2.5 p-2.5 sm:p-3 rounded-lg bg-elevated hover:bg-elevated/80 border border-line hover:border-accent/50 transition-colors text-fg-secondary hover:text-accent group"
                       >
-                        <Mail className="w-5 h-5 text-accent flex-shrink-0" />
-                        <span className="text-sm font-mono truncate">info.moislam@gmail.com</span>
+                        <Linkedin className="w-4 h-4 sm:w-5 sm:h-5 text-accent shrink-0" />
+                        <span className="text-xs font-mono">LinkedIn Profile</span>
                       </a>
                     </li>
+
+                    {/* GitHub */}
                     <li>
                       <a
-                        href="tel:+201280806343"
-                        aria-label="Call +20 128 080 6343"
-                        className="flex items-center gap-3 p-3 rounded-lg bg-elevated hover:bg-elevated/80 border border-line hover:border-accent/50 transition-colors text-fg-secondary hover:text-accent group"
+                        href={socialLinks.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2.5 p-2.5 sm:p-3 rounded-lg bg-elevated hover:bg-elevated/80 border border-line hover:border-accent/50 transition-colors text-fg-secondary hover:text-accent group"
                       >
-                        <Phone className="w-5 h-5 text-accent flex-shrink-0" />
-                        <span className="text-sm font-mono">+20 128 080 6343</span>
+                        <Github className="w-4 h-4 sm:w-5 sm:h-5 text-accent shrink-0" />
+                        <span className="text-xs font-mono">GitHub Profile</span>
                       </a>
                     </li>
-                    {socialLinks?.linkedin && (
-                      <li>
-                        <a
-                          href={socialLinks.linkedin}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label="View LinkedIn profile"
-                          className="flex items-center gap-3 p-3 rounded-lg bg-elevated hover:bg-elevated/80 border border-line hover:border-accent/50 transition-colors text-fg-secondary hover:text-accent group"
-                        >
-                          <Linkedin className="w-5 h-5 text-accent flex-shrink-0" />
-                          <span className="text-sm font-mono">LinkedIn Profile</span>
-                        </a>
-                      </li>
-                    )}
-                    {socialLinks?.github && (
-                      <li>
-                        <a
-                          href={socialLinks.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label="View GitHub profile"
-                          className="flex items-center gap-3 p-3 rounded-lg bg-elevated hover:bg-elevated/80 border border-line hover:border-accent/50 transition-colors text-fg-secondary hover:text-accent group"
-                        >
-                          <Github className="w-5 h-5 text-accent flex-shrink-0" />
-                          <span className="text-sm font-mono">GitHub Profile</span>
-                        </a>
-                      </li>
-                    )}
                   </ul>
                 </div>
 
-                <div className="flex items-center gap-2 text-fg-muted pt-6 mt-6 border-t border-line text-sm font-mono">
-                  <MapPin className="w-4 h-4 text-accent" />
-                  <span>Alexandria, Egypt</span>
+                <div className="flex items-center gap-2 text-fg-muted pt-5 sm:pt-6 mt-5 sm:mt-6 border-t border-line text-[11px] sm:text-xs font-mono">
+                  <MapPin className="w-4 h-4 text-accent shrink-0" />
+                  <span>Alexandria, Egypt (Available Globally)</span>
                 </div>
               </Card>
             </ScrollReveal>

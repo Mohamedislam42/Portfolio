@@ -8,15 +8,15 @@ import { MapPin, Calendar } from 'lucide-react';
 
 export function Experience() {
   return (
-    <section id="experience" className="py-24 px-6 bg-base">
+    <section id="experience" className="py-16 sm:py-24 px-4 sm:px-6 bg-base">
       <div className="max-w-7xl mx-auto">
         <SectionHeading index={2} kicker="Experience" title="Where I've worked" />
         
-        <div className="relative mt-12 lg:pl-0">
+        <div className="relative mt-8 sm:mt-12 lg:pl-0">
           {/* Desktop timeline line */}
           <div className="hidden lg:block absolute left-[24px] top-0 bottom-0 w-px bg-line" />
           
-          <div className="space-y-12">
+          <div className="space-y-8 sm:space-y-12">
             {experiences.map((exp: any, index: number) => (
               <ScrollReveal key={index} delay={0.1 * index}>
                 <div className="relative lg:pl-16">
@@ -24,26 +24,26 @@ export function Experience() {
                   <div className="hidden lg:block absolute left-[17px] top-1.5 w-[15px] h-[15px] rounded-full border-2 border-accent bg-base z-10" />
 
                   {/* Mobile border line & stacking layout */}
-                  <div className="lg:border-0 border-l-2 border-accent pl-6 lg:pl-0">
-                    <h3 className="text-h3 font-heading text-fg">{exp.role}</h3>
-                    <p className="text-body text-accent mt-1">{exp.company}</p>
+                  <div className="lg:border-0 border-l-2 border-accent pl-4 sm:pl-6 lg:pl-0">
+                    <h3 className="text-xl sm:text-2xl font-heading text-fg font-bold">{exp.role}</h3>
+                    <p className="text-sm sm:text-base text-accent mt-0.5">{exp.company}</p>
 
-                    <div className="flex flex-wrap gap-4 mt-3 text-fg-muted text-small font-mono">
+                    <div className="flex flex-wrap gap-2.5 sm:gap-4 mt-2.5 text-fg-muted text-xs font-mono">
                       {exp.location && (
                         <div className="flex items-center gap-1.5">
-                          <MapPin className="w-4 h-4" />
+                          <MapPin className="w-3.5 h-3.5" />
                           <span>{exp.location}</span>
                         </div>
                       )}
                       {(exp.dateRange || exp.duration || exp.startDate) && (
                         <div className="flex items-center gap-1.5">
-                          <Calendar className="w-4 h-4" />
+                          <Calendar className="w-3.5 h-3.5" />
                           <span>{exp.dateRange || exp.duration || `${exp.startDate} - ${exp.endDate}`}</span>
                         </div>
                       )}
                       {exp.mode && (
                         <div className="flex items-center gap-1.5">
-                          <span className="bg-surface px-2 py-0.5 rounded border border-line">
+                          <span className="bg-surface px-2 py-0.5 rounded border border-line text-[11px]">
                             {exp.mode}
                           </span>
                         </div>
@@ -51,11 +51,11 @@ export function Experience() {
                     </div>
 
                     {exp.bullets && exp.bullets.length > 0 && (
-                      <ul className="mt-6 space-y-3">
+                      <ul className="mt-4 sm:mt-6 space-y-2.5 sm:space-y-3">
                         {exp.bullets.map((bullet: string, i: number) => (
                           <li 
                             key={i} 
-                            className="text-body text-fg-secondary relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2.5 before:w-1.5 before:h-1.5 before:bg-accent before:rounded-full"
+                            className="text-xs sm:text-sm text-fg-secondary relative pl-4 sm:pl-5 before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:bg-accent before:rounded-full leading-relaxed"
                           >
                             {bullet}
                           </li>
@@ -64,7 +64,7 @@ export function Experience() {
                     )}
 
                     {exp.techStack && exp.techStack.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-6">
+                      <div className="flex flex-wrap gap-1.5 mt-4 sm:mt-6">
                         {exp.techStack.map((tech: string, i: number) => (
                           <Tag key={i} variant="small">{tech}</Tag>
                         ))}

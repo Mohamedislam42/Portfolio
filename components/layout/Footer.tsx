@@ -47,7 +47,7 @@ export function Footer() {
         </div>
 
         <div className="mt-8 pt-8 border-t border-white/10 flex flex-col-reverse md:flex-row justify-between items-center gap-4">
-          <p className="text-fg-secondary/70 text-sm">
+          <p className="text-fg-secondary text-sm">
             © {new Date().getFullYear()} Mohamed Islam Elshourbagy. All rights reserved.
           </p>
           <button

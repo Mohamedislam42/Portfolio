@@ -2,10 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-fg: #FFFFFF;
+  --color-fg-secondary: #CBD5E1;
+  --color-fg-muted: #94A3B8;
+  --color-base: #0A0A0F;
+  --color-surface: #12121A;
+  --color-elevated: #1A1A24;
+  --color-accent: #5EEAD4;
+}
+
+.text-fg-secondary {
+  color: #CBD5E1 !important;
+}
+
+.text-fg-muted {
+  color: #94A3B8 !important;
+}
+
+.text-fg {
+  color: #FFFFFF !important;
+}
+
 @layer base {
   html, body {
     @apply bg-base text-fg font-body antialiased;
     scroll-behavior: smooth;
+    color: #FFFFFF;
+  }
+  
+  p {
+    color: #CBD5E1;
   }
   
   @media (prefers-reduced-motion: reduce) {

@@ -1,86 +1,149 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Tag } from '@/components/ui/Tag';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { Card } from '@/components/ui/Card';
 import { skillCategories } from '@/data/skills';
-import { Cpu } from 'lucide-react';
+import { Brain, Cpu, GitBranch, Code, Layers, Search, Sparkles } from 'lucide-react';
+import { scrollToSection } from '@/lib/utils';
 
 export function Skills() {
-  const featuredCategory = skillCategories.find(cat => cat.featured);
-  const otherCategories = skillCategories.filter(cat => !cat.featured);
+  const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const getIcon = (id: string) => {
+    switch (id) {
+      case 'ai-nlp':
+        return <Brain className="w-5 h-5" />;
+      case 'ml-frameworks':
+        return <Cpu className="w-5 h-5" />;
+      case 'algorithms-systems':
+        return <GitBranch className="w-5 h-5" />;
+      case 'languages':
+        return <Code className="w-5 h-5" />;
+      default:
+        return <Layers className="w-5 h-5" />;
+    }
+  };
+
+  const filteredCategories = skillCategories.filter((cat) => {
+    if (activeCategory !== 'all' && cat.id !== activeCategory) return false;
+    if (!searchQuery.trim()) return true;
+
+    return (
+      cat.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      cat.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      cat.items.some((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
+  });
 
   return (
-    <section id="skills" className="py-24 px-6 bg-base">
+    <section id="skills" className="py-16 sm:py-24 px-4 sm:px-6 bg-surface">
       <div className="max-w-7xl mx-auto">
-        <SectionHeading index={4} kicker="Skills" title="Tools & technologies" />
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
+          <SectionHeading index={5} kicker="Technical Skills" title="Tools, Frameworks & Concepts" />
 
-        <div className="mt-12 space-y-8">
-          {featuredCategory && (
-            <ScrollReveal delay={0.1}>
-              <Card hoverable glowOnHover className="p-6 md:p-8 bg-surface relative overflow-hidden group">
-                {/* Gradient accent bar */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent/80 via-accent/40 to-transparent" />
-                
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-9 h-9 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
-                    <Cpu className="w-5 h-5" />
+          <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 w-full sm:w-auto">
+            <div className="relative w-full sm:w-44">
+              <Search className="w-4 h-4 text-fg-muted absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                placeholder="Filter skill or tool..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-base border border-line rounded-lg pl-9 pr-3 py-2 text-xs font-mono text-fg placeholder:text-fg-muted focus:border-accent focus:outline-none"
+              />
+            </div>
+
+            <div className="inline-flex p-1 rounded-lg bg-base border border-line overflow-x-auto max-w-full no-scrollbar shrink-0">
+              <button
+                onClick={() => setActiveCategory('all')}
+                className={`px-3 py-1.5 rounded text-xs font-mono whitespace-nowrap transition-colors ${
+                  activeCategory === 'all'
+                    ? 'bg-accent text-base font-semibold'
+                    : 'text-fg-secondary hover:text-fg'
+                }`}
+              >
+                All Domains
+              </button>
+              {skillCategories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                  className={`px-3 py-1.5 rounded text-xs font-mono whitespace-nowrap transition-colors ${
+                    activeCategory === cat.id
+                      ? 'bg-accent text-base font-semibold'
+                      : 'text-fg-secondary hover:text-fg'
+                  }`}
+                >
+                  {cat.name.split(' ')[0]}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Categories Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {filteredCategories.map((category, index) => (
+            <ScrollReveal key={category.id} delay={0.08 * (index + 1)}>
+              <Card hoverable glowOnHover className="p-4 sm:p-6 bg-elevated/70 border-line h-full flex flex-col justify-between group relative overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent/50 to-transparent" />
+
+                <div>
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center text-accent shrink-0">
+                      {getIcon(category.id)}
+                    </div>
+                    <div>
+                      <h3 className="font-heading text-sm sm:text-base font-bold text-fg group-hover:text-accent transition-colors">
+                        {category.name}
+                      </h3>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-heading text-h4 text-fg group-hover:text-accent transition-colors">
-                      {featuredCategory.name}
-                    </h3>
-                    <p className="font-mono text-mono-label text-fg-secondary/70 text-xs">
-                      Core focus & foundational knowledge
-                    </p>
+
+                  <p className="text-xs text-fg-secondary font-body mb-4 sm:mb-5 leading-relaxed">
+                    {category.description}
+                  </p>
+
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                    {category.items
+                      .filter((item) =>
+                        searchQuery ? item.name.toLowerCase().includes(searchQuery.toLowerCase()) : true
+                      )
+                      .map((item) => (
+                        <span
+                          key={item.name}
+                          onClick={() => {
+                            if (item.projectRef) {
+                              scrollToSection('projects');
+                            }
+                          }}
+                          className={`inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded-md text-[11px] sm:text-xs font-mono border transition-all ${
+                            item.level === 'Core'
+                              ? 'bg-accent/10 border-accent/30 text-accent font-medium'
+                              : 'bg-surface border-line text-fg-secondary hover:text-fg hover:border-accent/40'
+                          } ${item.projectRef ? 'cursor-pointer hover:scale-105' : ''}`}
+                          title={item.projectRef ? `Used in project: ${item.projectRef} (Click to view)` : undefined}
+                        >
+                          <span>{item.name}</span>
+                          {item.projectRef && <Sparkles className="w-3 h-3 text-accent shrink-0" />}
+                        </span>
+                      ))}
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2.5">
-                  {featuredCategory.items.map(item => (
-                    <Tag 
-                      key={item} 
-                      variant="accent" 
-                      className="hover:bg-accent/20 transition-colors text-sm px-3.5 py-1.5"
-                    >
-                      {item}
-                    </Tag>
-                  ))}
+                <div className="mt-5 sm:mt-6 pt-3 border-t border-line/60 flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-fg-muted">
+                  <span>{category.items.length} technologies</span>
+                  <span className="text-accent/80 font-medium">
+                    {category.items.filter((i) => i.level === 'Core').length} Core Proficiencies
+                  </span>
                 </div>
               </Card>
             </ScrollReveal>
-          )}
-
-          {otherCategories.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {otherCategories.map((category, index) => (
-                <ScrollReveal key={category.id} delay={0.08 * ((index % 3) + 1)}>
-                  <Card hoverable glowOnHover className="p-6 bg-surface h-full flex flex-col justify-between group">
-                    <div>
-                      <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-line">
-                        <h3 className="font-heading text-h4 text-fg group-hover:text-accent transition-colors text-base font-semibold">
-                          {category.name}
-                        </h3>
-                        <span className="font-mono text-xs text-fg-muted">
-                          {category.items.length}
-                        </span>
-                      </div>
-                      
-                      <div className="flex flex-wrap gap-2">
-                        {category.items.map(item => (
-                          <Tag key={item} variant="default" className="text-xs">
-                            {item}
-                          </Tag>
-                        ))}
-                      </div>
-                    </div>
-                  </Card>
-                </ScrollReveal>
-              ))}
-            </div>
-          )}
+          ))}
         </div>
       </div>
     </section>
