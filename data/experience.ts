@@ -77,6 +77,6 @@ export const education: Education = {
   institution: 'Al Alamein International University (AIU)',
   location: 'Egypt',
   startDate: 'Oct 2022',
-  endDate: 'Jul 2026 (Expected)',
+  endDate: 'Jul 2027',
   description: 'Specialization covering machine learning, deep learning, NLP, algorithms, and software engineering.',
 };

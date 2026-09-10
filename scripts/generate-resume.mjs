@@ -124,7 +124,7 @@ async function generateExactResume() {
     font: fontBold,
     color: black,
   });
-  const eduDate = 'Oct 2022 – Jul 2026 (Expected)';
+  const eduDate = 'Oct 2022 – Jul 2027';
   const eduDateW = fontOblique.widthOfTextAtSize(eduDate, 9.5);
   page1.drawText(eduDate, {
     x: pageWidth - margin - eduDateW,

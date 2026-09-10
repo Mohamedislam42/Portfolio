@@ -90,10 +90,11 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                   <h1 className="text-2xl md:text-3xl font-heading font-bold text-fg">Mohamed Islam Elshourbagy</h1>
                   <p className="text-accent font-mono text-sm mt-1">Computer Science & Artificial Intelligence Student • ML Engineer</p>
                 </div>
-                <div className="text-xs font-mono text-fg-secondary space-y-0.5 md:text-right">
+                <div className="text-xs font-mono text-fg-secondary space-y-1 md:text-right shrink-0">
                   <p>Alexandria, Egypt</p>
-                  <p>info.moislam@gmail.com | +20 128 080 6343</p>
-                  <p>github.com/Mohamedislam42</p>
+                  <p className="whitespace-nowrap">info.moislam@gmail.com</p>
+                  <p className="whitespace-nowrap">+20 128 080 6343</p>
+                  <p className="whitespace-nowrap">github.com/Mohamedislam42</p>
                 </div>
               </div>
 

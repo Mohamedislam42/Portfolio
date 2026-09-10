@@ -46,7 +46,7 @@ export function About() {
                 </Tag>
                 <Tag>
                   <FontAwesomeIcon icon={faGraduationCap} className="w-3 h-3 mr-1.5 text-fg-muted" />
-                  CS & AI @ AIU (2026)
+                  CS & AI @ AIU (2027)
                 </Tag>
               </div>
             </ScrollReveal>
@@ -59,13 +59,13 @@ export function About() {
               
               <div className="text-sm sm:text-base md:text-lg text-slate-300 text-fg-secondary space-y-3.5 sm:space-y-4 mt-4 sm:mt-6 leading-relaxed">
                 <p>
-                  I'm a Computer Science & AI student at Al Alamein International University, set to graduate in 2026. I specialize in building intelligent systems — not just models in notebooks, but complete production applications from data preprocessing to containerized deployment.
+                  I'm a Computer Science & AI student at Al Alamein International University, graduating in 2027, focused on building AI systems that actually run — not just models in a notebook, but the full path from data to something deployed and usable.
                 </p>
                 <p>
-                  My engineering journey spans deep machine learning and system software: from parameter-efficient fine-tuning (LoRA) and neural knowledge distillation for NLP, to full-stack ML-powered traffic optimization and routing engines, to multithreaded socket servers and 3D AI agent simulation.
+                  My work spans three areas: parameter-efficient NLP (fine-tuning and distillation), full-stack ML applications (traffic prediction, routing, containerized deployment), and multi-agent LLM systems (agents that research, summarize, and verify each other's work). I'm currently building on this through DEPI, Egypt's national program for agentic and generative AI development.
                 </p>
                 <p>
-                  The through-line is shipping. I consistently deliver complete, working systems with measurable efficiency gains — whether that means reducing trainable parameters by 97.85% while retaining 96.9% of full model performance or delivering sub-second route calculations across dense graph networks.
+                  What I care about most is the last step most student projects skip — turning a working model into something someone else can open, use, and trust. The details and results for each project are below.
                 </p>
               </div>
 
