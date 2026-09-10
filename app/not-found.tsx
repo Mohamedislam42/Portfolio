@@ -2,7 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Home } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouse } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/ui/Button';
 
 export default function NotFound() {
@@ -32,7 +33,7 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link href="/">
             <Button variant="primary" size="md" className="w-full sm:w-auto font-mono text-sm">
-              <Home className="w-4 h-4 mr-2" />
+              <FontAwesomeIcon icon={faHouse} className="w-4 h-4 mr-2" />
               Back to Home
             </Button>
           </Link>

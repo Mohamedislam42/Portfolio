@@ -6,7 +6,8 @@ import { Tag } from '@/components/ui/Tag';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { Card } from '@/components/ui/Card';
 import { skillCategories } from '@/data/skills';
-import { Brain, Cpu, GitBranch, Code, Layers, Search, Sparkles } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBrain, faMicrochip, faCodeBranch, faCode, faLayerGroup, faMagnifyingGlass, faWandMagicSparkles } from '@fortawesome/free-solid-svg-icons';
 import { scrollToSection } from '@/lib/utils';
 
 export function Skills() {
@@ -16,15 +17,15 @@ export function Skills() {
   const getIcon = (id: string) => {
     switch (id) {
       case 'ai-nlp':
-        return <Brain className="w-5 h-5" />;
+        return <FontAwesomeIcon icon={faBrain} className="w-4 h-4" />;
       case 'ml-frameworks':
-        return <Cpu className="w-5 h-5" />;
+        return <FontAwesomeIcon icon={faMicrochip} className="w-4 h-4" />;
       case 'algorithms-systems':
-        return <GitBranch className="w-5 h-5" />;
+        return <FontAwesomeIcon icon={faCodeBranch} className="w-4 h-4" />;
       case 'languages':
-        return <Code className="w-5 h-5" />;
+        return <FontAwesomeIcon icon={faCode} className="w-4 h-4" />;
       default:
-        return <Layers className="w-5 h-5" />;
+        return <FontAwesomeIcon icon={faLayerGroup} className="w-4 h-4" />;
     }
   };
 
@@ -47,7 +48,7 @@ export function Skills() {
 
           <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 w-full sm:w-auto">
             <div className="relative w-full sm:w-44">
-              <Search className="w-4 h-4 text-fg-muted absolute left-3 top-1/2 -translate-y-1/2" />
+              <FontAwesomeIcon icon={faMagnifyingGlass} className="w-3.5 h-3.5 text-fg-muted absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Filter skill or tool..."
@@ -129,7 +130,7 @@ export function Skills() {
                           title={item.projectRef ? `Used in project: ${item.projectRef} (Click to view)` : undefined}
                         >
                           <span>{item.name}</span>
-                          {item.projectRef && <Sparkles className="w-3 h-3 text-accent shrink-0" />}
+                          {item.projectRef && <FontAwesomeIcon icon={faWandMagicSparkles} className="w-2.5 h-2.5 text-accent shrink-0" />}
                         </span>
                       ))}
                   </div>

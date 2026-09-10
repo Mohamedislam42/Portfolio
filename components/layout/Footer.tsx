@@ -1,6 +1,8 @@
 'use client';
 
-import { Github, Linkedin, Mail } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { socialLinks } from '@/data/navigation';
 
 export function Footer() {
@@ -19,25 +21,25 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub profile"
-              className="p-2 text-fg-secondary hover:text-accent hover:bg-elevated rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="p-2 text-fg-secondary hover:text-accent hover:bg-elevated rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent w-9 h-9 flex items-center justify-center"
             >
-              <Github size={20} />
+              <FontAwesomeIcon icon={faGithub} className="w-5 h-5 text-[18px]" />
             </a>
             <a
               href={socialLinks.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
-              className="p-2 text-fg-secondary hover:text-accent hover:bg-elevated rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="p-2 text-fg-secondary hover:text-accent hover:bg-elevated rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent w-9 h-9 flex items-center justify-center"
             >
-              <Linkedin size={20} />
+              <FontAwesomeIcon icon={faLinkedin} className="w-5 h-5 text-[18px]" />
             </a>
             <a
               href={socialLinks.email}
               aria-label="Email me"
-              className="p-2 text-fg-secondary hover:text-accent hover:bg-elevated rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="p-2 text-fg-secondary hover:text-accent hover:bg-elevated rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent w-9 h-9 flex items-center justify-center"
             >
-              <Mail size={20} />
+              <FontAwesomeIcon icon={faEnvelope} className="w-4 h-4 text-[16px]" />
             </a>
           </div>
         </div>

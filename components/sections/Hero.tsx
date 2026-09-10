@@ -3,7 +3,9 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ChevronDown, Download, Github, Linkedin, Sparkles, ArrowRight } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown, faDownload, faWandMagicSparkles, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { Button } from '@/components/ui/Button';
 import { socialLinks } from '@/data/navigation';
 import { scrollToSection } from '@/lib/utils';
@@ -74,9 +76,9 @@ export function Hero({ onOpenResume }: { onOpenResume?: () => void }) {
             className="flex flex-wrap items-center gap-3 sm:gap-4 mt-6 sm:mt-8"
           >
             <Button variant="primary" onClick={() => scrollToSection('ai-lab')} className="group font-mono text-xs sm:text-sm">
-              <Sparkles className="w-4 h-4 mr-1.5 text-base" />
+              <FontAwesomeIcon icon={faWandMagicSparkles} className="w-3.5 h-3.5 mr-2 text-base" />
               Try Live AI Lab
-              <ArrowRight className="w-3.5 h-3.5 ml-1.5 group-hover:translate-x-1 transition-transform" />
+              <FontAwesomeIcon icon={faArrowRight} className="w-3 h-3 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
 
             <Button variant="secondary" onClick={() => scrollToSection('projects')} className="font-mono text-xs sm:text-sm">
@@ -88,7 +90,7 @@ export function Hero({ onOpenResume }: { onOpenResume?: () => void }) {
               onClick={onOpenResume ? onOpenResume : () => window.open('/resume.pdf', '_blank')}
               className="font-mono text-xs sm:text-sm"
             >
-              <Download className="w-4 h-4 mr-1.5" />
+              <FontAwesomeIcon icon={faDownload} className="w-3.5 h-3.5 mr-2" />
               Resume
             </Button>
           </motion.div>
@@ -99,10 +101,10 @@ export function Hero({ onOpenResume }: { onOpenResume?: () => void }) {
             className="flex items-center gap-3 mt-8 sm:mt-10"
           >
             <Button variant="icon" href={socialLinks?.github || '#'} ariaLabel="GitHub">
-              <Github className="w-5 h-5" />
+              <FontAwesomeIcon icon={faGithub} className="w-4 h-4 text-base" />
             </Button>
             <Button variant="icon" href={socialLinks?.linkedin || '#'} ariaLabel="LinkedIn">
-              <Linkedin className="w-5 h-5" />
+              <FontAwesomeIcon icon={faLinkedin} className="w-4 h-4 text-base" />
             </Button>
           </motion.div>
         </motion.div>
@@ -114,7 +116,7 @@ export function Hero({ onOpenResume }: { onOpenResume?: () => void }) {
           aria-label="Scroll to about section"
           className="p-2 text-fg-secondary hover:text-accent transition-colors"
         >
-          <ChevronDown className={`w-5 h-5 sm:w-6 sm:h-6 ${shouldReduceMotion ? '' : 'animate-bounce-slow'}`} />
+          <FontAwesomeIcon icon={faChevronDown} className={`w-4 h-4 ${shouldReduceMotion ? '' : 'animate-bounce-slow'}`} />
         </button>
       </div>
     </section>

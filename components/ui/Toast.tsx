@@ -2,7 +2,8 @@
 
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { CheckCircle, AlertCircle, Info, X } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleCheck, faCircleExclamation, faCircleInfo, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 interface Toast {
   id: string;
@@ -47,9 +48,9 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
               className="pointer-events-auto flex items-center justify-between gap-3 p-3.5 rounded-xl bg-surface/95 backdrop-blur-md border border-line shadow-glow text-fg text-sm font-mono"
             >
               <div className="flex items-center gap-2.5 min-w-0">
-                {toast.type === 'success' && <CheckCircle className="w-4 h-4 text-accent shrink-0" />}
-                {toast.type === 'error' && <AlertCircle className="w-4 h-4 text-error shrink-0" />}
-                {toast.type === 'info' && <Info className="w-4 h-4 text-accent shrink-0" />}
+                {toast.type === 'success' && <FontAwesomeIcon icon={faCircleCheck} className="w-4 h-4 text-accent shrink-0" />}
+                {toast.type === 'error' && <FontAwesomeIcon icon={faCircleExclamation} className="w-4 h-4 text-error shrink-0" />}
+                {toast.type === 'info' && <FontAwesomeIcon icon={faCircleInfo} className="w-4 h-4 text-accent shrink-0" />}
                 <span className="truncate">{toast.message}</span>
               </div>
               <button
@@ -57,7 +58,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
                 className="text-fg-muted hover:text-fg p-1 rounded transition-colors"
                 aria-label="Dismiss toast"
               >
-                <X className="w-3.5 h-3.5" />
+                <FontAwesomeIcon icon={faXmark} className="w-3.5 h-3.5" />
               </button>
             </motion.div>
           ))}

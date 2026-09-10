@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Menu, X, Sparkles } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faXmark, faWandMagicSparkles } from '@fortawesome/free-solid-svg-icons';
 import { navLinks } from '@/data/navigation';
 import { cn, scrollToSection } from '@/lib/utils';
 import { useScrollSpy } from '@/lib/hooks/useScrollSpy';
@@ -78,7 +79,7 @@ export function Navbar({ onOpenResume }: NavbarProps) {
                         isAILab && 'text-teal-300/90 hover:text-accent font-semibold'
                       )}
                     >
-                      {isAILab && <Sparkles className="w-3 h-3 text-accent animate-pulse" />}
+                      {isAILab && <FontAwesomeIcon icon={faWandMagicSparkles} className="w-3 h-3 text-accent animate-pulse" />}
                       <span>{link.label}</span>
                     </button>
                   </li>
@@ -114,7 +115,11 @@ export function Navbar({ onOpenResume }: NavbarProps) {
               aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isMobileMenuOpen}
             >
-              {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+              {isMobileMenuOpen ? (
+                <FontAwesomeIcon icon={faXmark} className="w-5 h-5 text-xl" />
+              ) : (
+                <FontAwesomeIcon icon={faBars} className="w-5 h-5 text-xl" />
+              )}
             </button>
           </div>
         </div>

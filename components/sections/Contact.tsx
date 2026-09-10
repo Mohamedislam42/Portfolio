@@ -7,7 +7,9 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { socialLinks } from '@/data/navigation';
 import { isValidEmail } from '@/lib/utils';
-import { Mail, Phone, Linkedin, Github, MapPin, CheckCircle, Send, Copy, Check } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope, faPhone, faLocationDot, faCircleCheck, faPaperPlane, faCopy, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faLinkedin, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { useToast } from '@/components/ui/Toast';
 import { cn } from '@/lib/utils';
 
@@ -255,14 +257,14 @@ export function Contact() {
                   >
                     {status === 'idle' || status === 'error' ? (
                       <>
-                        <Send size={15} />
+                        <FontAwesomeIcon icon={faPaperPlane} className="w-3.5 h-3.5" />
                         <span>Send Direct Dispatch</span>
                       </>
                     ) : status === 'loading' ? (
                       'Dispatching...'
                     ) : (
                       <>
-                        <CheckCircle className="text-success" size={16} />
+                        <FontAwesomeIcon icon={faCircleCheck} className="text-success w-4 h-4" />
                         <span className="text-success">Message Sent!</span>
                       </>
                     )}
@@ -303,7 +305,7 @@ export function Contact() {
                           href="mailto:info.moislam@gmail.com"
                           className="flex items-center gap-2.5 min-w-0 text-fg-secondary hover:text-accent transition-colors"
                         >
-                          <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-accent shrink-0" />
+                          <FontAwesomeIcon icon={faEnvelope} className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-accent shrink-0" />
                           <span className="text-[11px] sm:text-xs font-mono truncate">info.moislam@gmail.com</span>
                         </a>
                         <button
@@ -313,7 +315,7 @@ export function Contact() {
                           title="Copy email to clipboard"
                           aria-label="Copy email"
                         >
-                          {copiedField === 'email' ? <Check className="w-3.5 h-3.5 text-accent" /> : <Copy className="w-3.5 h-3.5" />}
+                          {copiedField === 'email' ? <FontAwesomeIcon icon={faCheck} className="w-3.5 h-3.5 text-accent" /> : <FontAwesomeIcon icon={faCopy} className="w-3.5 h-3.5" />}
                         </button>
                       </div>
                     </li>
@@ -325,7 +327,7 @@ export function Contact() {
                           href="tel:+201280806343"
                           className="flex items-center gap-2.5 min-w-0 text-fg-secondary hover:text-accent transition-colors"
                         >
-                          <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-accent shrink-0" />
+                          <FontAwesomeIcon icon={faPhone} className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-accent shrink-0" />
                           <span className="text-[11px] sm:text-xs font-mono">+20 128 080 6343</span>
                         </a>
                         <button
@@ -335,7 +337,7 @@ export function Contact() {
                           title="Copy phone to clipboard"
                           aria-label="Copy phone"
                         >
-                          {copiedField === 'phone' ? <Check className="w-3.5 h-3.5 text-accent" /> : <Copy className="w-3.5 h-3.5" />}
+                          {copiedField === 'phone' ? <FontAwesomeIcon icon={faCheck} className="w-3.5 h-3.5 text-accent" /> : <FontAwesomeIcon icon={faCopy} className="w-3.5 h-3.5" />}
                         </button>
                       </div>
                     </li>
@@ -348,7 +350,7 @@ export function Contact() {
                         rel="noopener noreferrer"
                         className="flex items-center gap-2.5 p-2.5 sm:p-3 rounded-lg bg-elevated hover:bg-elevated/80 border border-line hover:border-accent/50 transition-colors text-fg-secondary hover:text-accent group"
                       >
-                        <Linkedin className="w-4 h-4 sm:w-5 sm:h-5 text-accent shrink-0" />
+                        <FontAwesomeIcon icon={faLinkedin} className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-accent shrink-0" />
                         <span className="text-xs font-mono">LinkedIn Profile</span>
                       </a>
                     </li>
@@ -361,7 +363,7 @@ export function Contact() {
                         rel="noopener noreferrer"
                         className="flex items-center gap-2.5 p-2.5 sm:p-3 rounded-lg bg-elevated hover:bg-elevated/80 border border-line hover:border-accent/50 transition-colors text-fg-secondary hover:text-accent group"
                       >
-                        <Github className="w-4 h-4 sm:w-5 sm:h-5 text-accent shrink-0" />
+                        <FontAwesomeIcon icon={faGithub} className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-accent shrink-0" />
                         <span className="text-xs font-mono">GitHub Profile</span>
                       </a>
                     </li>
@@ -369,7 +371,7 @@ export function Contact() {
                 </div>
 
                 <div className="flex items-center gap-2 text-fg-muted pt-5 sm:pt-6 mt-5 sm:mt-6 border-t border-line text-[11px] sm:text-xs font-mono">
-                  <MapPin className="w-4 h-4 text-accent shrink-0" />
+                  <FontAwesomeIcon icon={faLocationDot} className="w-4 h-4 text-accent shrink-0" />
                   <span>Alexandria, Egypt (Available Globally)</span>
                 </div>
               </Card>

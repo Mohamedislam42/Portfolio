@@ -2,7 +2,9 @@
 
 import { useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { Github, Linkedin, Mail, X } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { navLinks, socialLinks } from '@/data/navigation';
 import { scrollToSection } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
@@ -138,7 +140,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               className="absolute top-6 right-6 p-2 text-fg hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md"
               aria-label="Close menu"
             >
-              <X size={24} />
+              <FontAwesomeIcon icon={faXmark} className="w-6 h-6 text-2xl" />
             </button>
 
             <ul className="flex flex-col items-center space-y-8 w-full max-w-sm">
@@ -179,25 +181,25 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub"
-                  className="p-3 bg-surface rounded-full text-fg-secondary hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  className="p-3 bg-surface rounded-full text-fg-secondary hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent w-12 h-12 flex items-center justify-center"
                 >
-                  <Github size={24} />
+                  <FontAwesomeIcon icon={faGithub} className="w-6 h-6 text-xl" />
                 </a>
                 <a
                   href={socialLinks.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
-                  className="p-3 bg-surface rounded-full text-fg-secondary hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  className="p-3 bg-surface rounded-full text-fg-secondary hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent w-12 h-12 flex items-center justify-center"
                 >
-                  <Linkedin size={24} />
+                  <FontAwesomeIcon icon={faLinkedin} className="w-6 h-6 text-xl" />
                 </a>
                 <a
                   href={socialLinks.email}
                   aria-label="Email"
-                  className="p-3 bg-surface rounded-full text-fg-secondary hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  className="p-3 bg-surface rounded-full text-fg-secondary hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent w-12 h-12 flex items-center justify-center"
                 >
-                  <Mail size={24} />
+                  <FontAwesomeIcon icon={faEnvelope} className="w-5 h-5 text-lg" />
                 </a>
               </motion.li>
             </ul>

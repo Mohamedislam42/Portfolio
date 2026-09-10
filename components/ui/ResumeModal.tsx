@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Download, Printer, GraduationCap, Briefcase, Code, Award, ExternalLink } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark, faDownload, faPrint, faGraduationCap, faBriefcase, faCode, faAward, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/ui/Button';
 import { education, experiences } from '@/data/experience';
 import { projects } from '@/data/projects';
@@ -57,7 +58,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                   onClick={handlePrint}
                   className="font-mono text-xs hidden sm:flex items-center gap-1.5"
                 >
-                  <Printer className="w-3.5 h-3.5" />
+                  <FontAwesomeIcon icon={faPrint} className="w-3.5 h-3.5" />
                   Print
                 </Button>
                 <Button
@@ -68,7 +69,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                   rel="noopener noreferrer"
                   className="font-mono text-xs flex items-center gap-1.5"
                 >
-                  <Download className="w-3.5 h-3.5" />
+                  <FontAwesomeIcon icon={faDownload} className="w-3.5 h-3.5" />
                   Download PDF
                 </Button>
                 <button
@@ -76,7 +77,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                   className="p-1.5 text-fg-secondary hover:text-accent rounded-lg transition-colors ml-2"
                   aria-label="Close resume preview"
                 >
-                  <X className="w-5 h-5" />
+                  <FontAwesomeIcon icon={faXmark} className="w-5 h-5" />
                 </button>
               </div>
             </div>
@@ -99,7 +100,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               {/* Education */}
               <section className="space-y-3">
                 <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-accent flex items-center gap-2">
-                  <GraduationCap className="w-4 h-4" />
+                  <FontAwesomeIcon icon={faGraduationCap} className="w-4 h-4" />
                   Education
                 </h3>
                 <div className="p-4 rounded-xl bg-surface border border-line">
@@ -115,7 +116,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               {/* Experience */}
               <section className="space-y-3">
                 <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-accent flex items-center gap-2">
-                  <Briefcase className="w-4 h-4" />
+                  <FontAwesomeIcon icon={faBriefcase} className="w-4 h-4" />
                   Experience & Internships
                 </h3>
                 <div className="space-y-3">
@@ -150,7 +151,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               {/* Highlighted Projects */}
               <section className="space-y-3">
                 <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-accent flex items-center gap-2">
-                  <Code className="w-4 h-4" />
+                  <FontAwesomeIcon icon={faCode} className="w-4 h-4" />
                   Highlighted Engineering Projects
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -180,7 +181,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               {/* Skills Matrix */}
               <section className="space-y-3">
                 <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-accent flex items-center gap-2">
-                  <Award className="w-4 h-4" />
+                  <FontAwesomeIcon icon={faAward} className="w-4 h-4" />
                   Skills & Technical Domains
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -198,7 +199,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               {/* Certifications */}
               <section className="space-y-3">
                 <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-accent flex items-center gap-2">
-                  <Award className="w-4 h-4" />
+                  <FontAwesomeIcon icon={faAward} className="w-4 h-4" />
                   Credentials & Certifications
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -214,7 +215,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                         <span className="font-semibold text-fg group-hover:text-accent transition-colors block">{cert.title}</span>
                         <span className="text-fg-muted font-mono text-[11px]">{cert.issuer} • {cert.platform}</span>
                       </div>
-                      <ExternalLink className="w-3.5 h-3.5 text-fg-muted group-hover:text-accent shrink-0 ml-2" />
+                      <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="w-3.5 h-3.5 text-fg-muted group-hover:text-accent shrink-0 ml-2" />
                     </a>
                   ))}
                 </div>

@@ -5,7 +5,8 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { Card } from '@/components/ui/Card';
 import { certifications } from '@/data/certifications';
-import { Award, ExternalLink } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAward, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
 export function Certifications() {
   return (
@@ -29,7 +30,7 @@ export function Certifications() {
                   className="p-4 sm:p-6 bg-elevated/70 border-line h-full flex items-start gap-3.5 sm:gap-4 transition-all duration-300 group-hover:border-accent/60"
                 >
                   <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent shrink-0 group-hover:scale-105 transition-transform">
-                    <Award className="w-5 h-5 sm:w-6 sm:h-6" />
+                    <FontAwesomeIcon icon={faAward} className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
                   
                   <div className="flex-1 min-w-0">
@@ -44,7 +45,7 @@ export function Certifications() {
                   </div>
 
                   <div className="text-fg-muted group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0 mt-0.5 p-1">
-                    <ExternalLink size={16} />
+                    <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="w-3.5 h-3.5" />
                   </div>
                 </Card>
               </a>

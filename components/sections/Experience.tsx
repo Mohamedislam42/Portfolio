@@ -4,7 +4,8 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { Tag } from '@/components/ui/Tag';
 import { experiences } from '@/data/experience';
-import { MapPin, Calendar } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLocationDot, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 
 export function Experience() {
   return (
@@ -31,13 +32,13 @@ export function Experience() {
                     <div className="flex flex-wrap gap-2.5 sm:gap-4 mt-2.5 text-fg-muted text-xs font-mono">
                       {exp.location && (
                         <div className="flex items-center gap-1.5">
-                          <MapPin className="w-3.5 h-3.5" />
+                          <FontAwesomeIcon icon={faLocationDot} className="w-3.5 h-3.5" />
                           <span>{exp.location}</span>
                         </div>
                       )}
                       {(exp.dateRange || exp.duration || exp.startDate) && (
                         <div className="flex items-center gap-1.5">
-                          <Calendar className="w-3.5 h-3.5" />
+                          <FontAwesomeIcon icon={faCalendarDays} className="w-3.5 h-3.5" />
                           <span>{exp.dateRange || exp.duration || `${exp.startDate} - ${exp.endDate}`}</span>
                         </div>
                       )}

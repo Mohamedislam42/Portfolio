@@ -6,7 +6,9 @@ import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { Card } from '@/components/ui/Card';
 import { Tag } from '@/components/ui/Tag';
 import { Button } from '@/components/ui/Button';
-import { ArrowRight, Github, ExternalLink, Sparkles, Search } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faArrowUpRightFromSquare, faWandMagicSparkles, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import dynamic from 'next/dynamic';
 import { projects } from '@/data/projects';
 import type { Project } from '@/data/projects';
@@ -47,7 +49,7 @@ export function Projects() {
           {/* Search bar & filter controls */}
           <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 w-full sm:w-auto">
             <div className="relative w-full sm:w-48">
-              <Search className="w-4 h-4 text-fg-muted absolute left-3 top-1/2 -translate-y-1/2" />
+              <FontAwesomeIcon icon={faMagnifyingGlass} className="w-3.5 h-3.5 text-fg-muted absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search tech, models..."
@@ -90,7 +92,7 @@ export function Projects() {
                     </span>
                     {project.featured && (
                       <span className="flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded-full bg-accent/15 text-accent border border-accent/30">
-                        <Sparkles className="w-3 h-3" /> Featured
+                        <FontAwesomeIcon icon={faWandMagicSparkles} className="w-3 h-3" /> Featured
                       </span>
                     )}
                   </div>
@@ -135,7 +137,7 @@ export function Projects() {
                       className="group/btn text-xs font-mono w-full sm:w-auto justify-center"
                     >
                       <span>Deep Dive & Architecture</span>
-                      <ArrowRight className="w-3.5 h-3.5 ml-1.5 group-hover/btn:translate-x-1 transition-transform" />
+                      <FontAwesomeIcon icon={faArrowRight} className="w-3.5 h-3.5 ml-1.5 group-hover/btn:translate-x-1 transition-transform" />
                     </Button>
 
                     <div className="flex items-center gap-2">
@@ -150,9 +152,9 @@ export function Projects() {
                           title={link.label}
                         >
                           {link.type === 'github' ? (
-                            <Github className="w-4 h-4" />
+                            <FontAwesomeIcon icon={faGithub} className="w-4 h-4" />
                           ) : (
-                            <ExternalLink className="w-4 h-4" />
+                            <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="w-4 h-4" />
                           )}
                         </a>
                       ))}

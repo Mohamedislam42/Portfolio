@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { ArrowUp } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 
 export function BackToTop() {
@@ -43,7 +44,7 @@ export function BackToTop() {
           title="Back to top"
           className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-40 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-surface/90 backdrop-blur-md border border-accent/40 text-accent shadow-card shadow-black/40 hover:bg-accent hover:text-base hover:border-accent hover:shadow-glow hover:-translate-y-1 transition-all duration-300 flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base group"
         >
-          <ArrowUp className="w-5 h-5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+          <FontAwesomeIcon icon={faArrowUp} className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform duration-200" />
         </motion.button>
       )}
     </AnimatePresence>

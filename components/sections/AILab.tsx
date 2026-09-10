@@ -5,16 +5,17 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
-  Sparkles, 
-  Cpu, 
-  Layers, 
-  Zap, 
-  Navigation, 
-  Activity, 
-  Sliders,
-  Play
-} from 'lucide-react';
+  faWandMagicSparkles, 
+  faMicrochip, 
+  faLayerGroup, 
+  faBolt, 
+  faLocationArrow, 
+  faChartLine, 
+  faSliders,
+  faPlay
+} from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
 
 // --- SENTIMENT LAB DATA & LOGIC ---
@@ -257,7 +258,7 @@ export function AILab() {
                   : 'text-fg-secondary hover:text-fg'
               }`}
             >
-              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+              <FontAwesomeIcon icon={faWandMagicSparkles} className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
               <span>LoRA & Distillation Lab</span>
             </button>
             <button
@@ -268,7 +269,7 @@ export function AILab() {
                   : 'text-fg-secondary hover:text-fg'
               }`}
             >
-              <Navigation className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+              <FontAwesomeIcon icon={faLocationArrow} className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
               <span>Cairo Routing Visualizer</span>
             </button>
           </div>
@@ -283,7 +284,7 @@ export function AILab() {
                 <Card className="p-4 sm:p-6 md:p-8 bg-elevated/70 border-line">
                   <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                     <div className="flex items-center gap-2 text-accent font-mono text-xs uppercase tracking-wider">
-                      <Cpu className="w-4 h-4 shrink-0" />
+                      <FontAwesomeIcon icon={faMicrochip} className="w-4 h-4 shrink-0" />
                       <span>Inference Input & Attention Pooling</span>
                     </div>
                     <span className="text-[11px] font-mono text-fg-muted">DistilGPT-2 + LoRA (PEFT)</span>
@@ -327,7 +328,7 @@ export function AILab() {
                         isLoading={isInferencing}
                         className="font-mono text-xs"
                       >
-                        <Play className="w-3.5 h-3.5 mr-1.5 fill-current" />
+                        <FontAwesomeIcon icon={faPlay} className="w-3 h-3 mr-1.5" />
                         Run Inference
                       </Button>
                     </div>
@@ -337,7 +338,7 @@ export function AILab() {
                   <div className="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-line">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-3">
                       <h4 className="text-xs font-mono font-semibold uppercase tracking-wider text-fg flex items-center gap-1.5">
-                        <Layers className="w-3.5 h-3.5 text-accent" />
+                        <FontAwesomeIcon icon={faLayerGroup} className="w-3.5 h-3.5 text-accent" />
                         <span>Hybrid 80% Attention Pooling Heatmap</span>
                       </h4>
                       <span className="text-[10px] sm:text-[11px] font-mono text-accent/80">Higher saturation = higher weight</span>
@@ -371,7 +372,7 @@ export function AILab() {
                   <div>
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-2 text-accent font-mono text-xs uppercase tracking-wider">
-                        <Activity className="w-4 h-4" />
+                        <FontAwesomeIcon icon={faChartLine} className="w-4 h-4" />
                         <span>Classification Output</span>
                       </div>
                       <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-accent/15 text-accent border border-accent/30">
@@ -440,7 +441,7 @@ export function AILab() {
               <div className="lg:col-span-4 space-y-4 sm:space-y-6">
                 <Card className="p-4 sm:p-6 bg-elevated/70 border-line space-y-4 sm:space-y-5">
                   <div className="flex items-center gap-2 text-accent font-mono text-xs uppercase tracking-wider">
-                    <Sliders className="w-4 h-4" />
+                    <FontAwesomeIcon icon={faSliders} className="w-4 h-4" />
                     <span>Route Engine Parameters</span>
                   </div>
 
@@ -531,7 +532,7 @@ export function AILab() {
                     isLoading={isRouting}
                     className="w-full font-mono text-xs mt-2"
                   >
-                    <Zap className="w-3.5 h-3.5 mr-1.5" />
+                    <FontAwesomeIcon icon={faBolt} className="w-3.5 h-3.5 mr-1.5" />
                     Compute Optimal Route
                   </Button>
                 </Card>
@@ -539,7 +540,7 @@ export function AILab() {
                 {/* Routing Telemetry */}
                 <Card className="p-4 sm:p-5 bg-elevated/70 border-line">
                   <h4 className="text-xs font-mono uppercase tracking-wider text-fg-secondary mb-3 flex items-center gap-1.5">
-                    <Activity className="w-3.5 h-3.5 text-accent" />
+                    <FontAwesomeIcon icon={faChartLine} className="w-3.5 h-3.5 text-accent" />
                     <span>Engine Telemetry</span>
                   </h4>
                   <div className="grid grid-cols-3 gap-1.5 sm:gap-2 text-center font-mono">
@@ -564,7 +565,7 @@ export function AILab() {
                 <Card className="p-4 sm:p-6 bg-elevated/70 border-line relative overflow-hidden flex flex-col justify-between h-full min-h-[360px] sm:min-h-[420px]">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
                     <div className="flex items-center gap-2 text-accent font-mono text-xs uppercase tracking-wider">
-                      <Navigation className="w-4 h-4" />
+                      <FontAwesomeIcon icon={faLocationArrow} className="w-4 h-4" />
                       <span>Greater Cairo Road Network Graph</span>
                     </div>
                     <span className="text-[10px] sm:text-[11px] font-mono text-fg-muted truncate">

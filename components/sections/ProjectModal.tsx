@@ -2,7 +2,9 @@
 
 import React, { useEffect, useRef } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { X, Github, ExternalLink, BarChart3, Layers, Cpu, CheckCircle2, Zap } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark, faArrowUpRightFromSquare, faChartSimple, faLayerGroup, faMicrochip, faCircleCheck, faBolt } from '@fortawesome/free-solid-svg-icons';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { Button } from '@/components/ui/Button';
 import { Tag } from '@/components/ui/Tag';
 import type { Project } from '@/data/projects';
@@ -100,7 +102,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 aria-label="Close project details"
                 className="shrink-0 p-2 rounded-lg text-fg-secondary hover:text-accent hover:bg-elevated transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               >
-                <X className="w-5 h-5" />
+                <FontAwesomeIcon icon={faXmark} className="w-5 h-5" />
               </button>
             </div>
 
@@ -109,7 +111,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               {project.problem && (
                 <section className="space-y-2">
                   <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-accent flex items-center gap-2">
-                    <Zap className="w-4 h-4" />
+                    <FontAwesomeIcon icon={faBolt} className="w-4 h-4" />
                     Problem & Engineering Objective
                   </h3>
                   <p className="text-body text-fg-secondary leading-relaxed">{project.problem}</p>
@@ -120,7 +122,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               {project.details && (
                 <section className="space-y-2">
                   <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-accent flex items-center gap-2">
-                    <Layers className="w-4 h-4" />
+                    <FontAwesomeIcon icon={faLayerGroup} className="w-4 h-4" />
                     System Architecture & Implementation
                   </h3>
                   <p className="text-body text-fg-secondary leading-relaxed">{project.details}</p>
@@ -131,7 +133,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               {project.architectureHighlights && project.architectureHighlights.length > 0 && (
                 <section className="space-y-3">
                   <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-accent flex items-center gap-2">
-                    <Cpu className="w-4 h-4" />
+                    <FontAwesomeIcon icon={faMicrochip} className="w-4 h-4" />
                     Key Architectural Highlights
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
@@ -140,7 +142,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                         key={i}
                         className="p-3 rounded-lg bg-elevated border border-line flex items-start gap-2.5 text-xs text-fg-secondary font-mono"
                       >
-                        <CheckCircle2 className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                        <FontAwesomeIcon icon={faCircleCheck} className="w-4 h-4 text-accent shrink-0 mt-0.5" />
                         <span>{highlight}</span>
                       </div>
                     ))}
@@ -152,7 +154,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               {project.benchmarks && project.benchmarks.length > 0 && (
                 <section className="space-y-3">
                   <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-accent flex items-center gap-2">
-                    <BarChart3 className="w-4 h-4" />
+                    <FontAwesomeIcon icon={faChartSimple} className="w-4 h-4" />
                     Empirical Benchmarks & Comparisons
                   </h3>
                   <div className="overflow-x-auto rounded-xl border border-line bg-elevated/70">
@@ -230,9 +232,9 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                       className="font-mono text-xs"
                     >
                       {link.type.toLowerCase() === 'github' ? (
-                        <Github className="w-4 h-4 mr-2" />
+                        <FontAwesomeIcon icon={faGithub} className="w-4 h-4 mr-2" />
                       ) : (
-                        <ExternalLink className="w-4 h-4 mr-2" />
+                        <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="w-4 h-4 mr-2" />
                       )}
                       {link.label}
                     </Button>
