@@ -245,7 +245,7 @@ export function AILab() {
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
-          <SectionHeading index={3} kicker="Interactive Lab" title="Live Model & Systems Playground" />
+          <SectionHeading index={4} kicker="Interactive Lab" title="Live Model & Systems Playground" />
           
           {/* Lab selector tabs */}
           <div className="inline-flex p-1 sm:p-1.5 rounded-xl bg-base border border-line max-w-full overflow-x-auto no-scrollbar shrink-0">

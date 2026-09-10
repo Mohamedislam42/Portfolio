@@ -42,7 +42,7 @@ export function Projects() {
     <section id="projects" className="py-16 sm:py-24 px-4 sm:px-6 bg-base">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
-          <SectionHeading index={4} kicker="Featured Work" title="Engineered Systems & Pipelines" />
+          <SectionHeading index={3} kicker="Featured Work" title="Engineered Systems & Pipelines" />
 
           {/* Search bar & filter controls */}
           <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 w-full sm:w-auto">

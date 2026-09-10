@@ -29,8 +29,8 @@ export default function Home() {
         />
         <About />
         <Experience />
-        <AILab />
         <Projects />
+        <AILab />
         <Skills />
         <Certifications />
         <Contact />
