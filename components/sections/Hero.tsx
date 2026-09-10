@@ -10,13 +10,6 @@ import { scrollToSection } from '@/lib/utils';
 
 const HeroBackground = dynamic(() => import('./HeroBackground'), { ssr: false });
 
-const METRICS_PILLS = [
-  { label: 'LoRA Param Reduction', value: '97.85%' },
-  { label: 'Distilled Macro F1', value: '0.8962' },
-  { label: 'Cairo Route Latency', value: '< 120ms' },
-  { label: 'Attention Mechanism', value: '80% Attn / 20% Mean' },
-];
-
 export function Hero({ onOpenResume }: { onOpenResume?: () => void }) {
   const shouldReduceMotion = useReducedMotion();
 
@@ -52,7 +45,7 @@ export function Hero({ onOpenResume }: { onOpenResume?: () => void }) {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface border border-accent/30 shadow-glow-sm">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
               <span className="font-mono text-[11px] sm:text-xs text-fg-secondary">
-                Open to ML & AI Roles (Graduating 2026)
+                Open to ML & AI Roles
               </span>
             </div>
           </motion.div>
@@ -100,23 +93,10 @@ export function Hero({ onOpenResume }: { onOpenResume?: () => void }) {
             </Button>
           </motion.div>
 
-          {/* Metrics Pills Banner */}
-          <motion.div
-            variants={itemVariants}
-            className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3.5 mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-line/60 w-full"
-          >
-            {METRICS_PILLS.map((pill, i) => (
-              <div key={i} className="p-2.5 sm:p-3.5 rounded-xl bg-surface/70 border border-line/80 backdrop-blur-sm">
-                <span className="block text-[10px] sm:text-[11px] font-mono text-fg-muted truncate">{pill.label}</span>
-                <span className="block text-sm sm:text-lg font-mono font-bold text-accent mt-0.5">{pill.value}</span>
-              </div>
-            ))}
-          </motion.div>
-
           {/* Social icons */}
           <motion.div
             variants={itemVariants}
-            className="flex items-center gap-3 mt-6 sm:mt-8"
+            className="flex items-center gap-3 mt-8 sm:mt-10"
           >
             <Button variant="icon" href={socialLinks?.github || '#'} ariaLabel="GitHub">
               <Github className="w-5 h-5" />

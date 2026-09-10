@@ -17,7 +17,6 @@ const CATEGORIES = [
   { id: 'all', label: 'All Projects' },
   { id: 'nlp', label: 'NLP & LLMs' },
   { id: 'systems', label: 'Full-Stack & Systems' },
-  { id: 'gamedev', label: 'Game & AI Simulation' },
 ];
 
 export function Projects() {
