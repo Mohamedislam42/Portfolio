@@ -22,6 +22,22 @@ export interface Education {
 
 export const experiences: Experience[] = [
   {
+    id: 'depi',
+    role: 'Agentic AI & Generative AI System Developer',
+    company: 'Digital Egypt Pioneers Initiative (DEPI)',
+    location: 'Egypt',
+    mode: 'Hybrid',
+    startDate: 'Jul 2026',
+    endDate: 'Present',
+    bullets: [
+      'Selected for DEPI, a government-backed national technical training initiative focused on building advanced digital skills for the Egyptian tech workforce.',
+      'Currently developing hands-on expertise in agentic AI system architecture, LLM-based application design, and generative AI development workflows.',
+      'Engaging with practical training covering AI agent orchestration, prompt engineering, and applied machine learning concepts as part of an intensive, project-based curriculum.',
+      'Building foundational proficiency in tools and frameworks relevant to generative AI development (e.g., LangChain, RAG pipelines, LLMs).',
+    ],
+    techStack: ['Agentic AI', 'Generative AI', 'LangChain', 'RAG Pipelines', 'LLMs', 'Prompt Engineering'],
+  },
+  {
     id: 'srta-city',
     role: 'Game Development & Animation Intern',
     company: 'City of Scientific Research and Technological Applications (SRTA-City)',
