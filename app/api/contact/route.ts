@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
     const { Resend } = await import('resend');
     const resend = new Resend(resendApiKey);
 
-    await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: 'Portfolio Contact <onboarding@resend.dev>',
       to: contactEmail,
       subject: `Portfolio Contact: ${cleanName}`,
@@ -97,7 +97,15 @@ export async function POST(request: NextRequest) {
       `,
     });
 
-    return NextResponse.json({ success: true });
+    if (error) {
+      console.error('Resend delivery error:', error);
+      return NextResponse.json(
+        { error: `Email delivery failed: ${error.message}` },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ success: true, id: data?.id });
   } catch (error) {
     console.error('Contact form error:', error);
     return NextResponse.json(
