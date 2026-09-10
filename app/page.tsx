@@ -12,6 +12,7 @@ import { Certifications } from '@/components/sections/Certifications';
 import { Contact } from '@/components/sections/Contact';
 import { Footer } from '@/components/layout/Footer';
 import { ResumeModal } from '@/components/ui/ResumeModal';
+import { BackToTop } from '@/components/ui/BackToTop';
 import { ToastProvider } from '@/components/ui/Toast';
 
 export default function Home() {
@@ -37,6 +38,9 @@ export default function Home() {
       </main>
 
       <Footer />
+
+      {/* Floating Circular Back To Top Button */}
+      <BackToTop />
 
       {/* Resume Modal */}
       <ResumeModal
