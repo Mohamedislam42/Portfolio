@@ -1,19 +1,36 @@
 'use client';
 
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { Navbar } from '@/components/layout/Navbar';
 import { Hero } from '@/components/sections/Hero';
 import { About } from '@/components/sections/About';
 import { Experience } from '@/components/sections/Experience';
-import { AILab } from '@/components/sections/AILab';
-import { Projects } from '@/components/sections/Projects';
 import { Skills } from '@/components/sections/Skills';
 import { Certifications } from '@/components/sections/Certifications';
-import { Contact } from '@/components/sections/Contact';
 import { Footer } from '@/components/layout/Footer';
-import { ResumeModal } from '@/components/ui/ResumeModal';
-import { BackToTop } from '@/components/ui/BackToTop';
 import { ToastProvider } from '@/components/ui/Toast';
+
+// Code-split heavy interactive and below-the-fold components
+const Projects = dynamic(() => import('@/components/sections/Projects').then((mod) => mod.Projects), {
+  loading: () => <div className="py-16 sm:py-24 max-w-7xl mx-auto px-4 min-h-[400px]" />,
+});
+
+const AILab = dynamic(() => import('@/components/sections/AILab').then((mod) => mod.AILab), {
+  loading: () => <div className="py-16 sm:py-24 max-w-7xl mx-auto px-4 min-h-[500px]" />,
+});
+
+const Contact = dynamic(() => import('@/components/sections/Contact').then((mod) => mod.Contact), {
+  loading: () => <div className="py-16 sm:py-24 max-w-7xl mx-auto px-4 min-h-[300px]" />,
+});
+
+const ResumeModal = dynamic(() => import('@/components/ui/ResumeModal').then((mod) => mod.ResumeModal), {
+  ssr: false,
+});
+
+const BackToTop = dynamic(() => import('@/components/ui/BackToTop').then((mod) => mod.BackToTop), {
+  ssr: false,
+});
 
 export default function Home() {
   const [isResumeOpen, setIsResumeOpen] = useState(false);
