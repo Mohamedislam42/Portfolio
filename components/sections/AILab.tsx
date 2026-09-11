@@ -626,8 +626,8 @@ export function AILab() {
   return (
     <section id="ai-lab" className="py-16 sm:py-24 px-4 sm:px-6 bg-surface relative overflow-hidden">
       {/* Background ambient decorative glow */}
-      <div className="absolute top-1/3 -left-32 w-96 h-96 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 -right-32 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/3 -left-32 w-96 h-96 bg-accent/5 rounded-full blur-3xl pointer-events-none transform-gpu" />
+      <div className="absolute bottom-10 -right-32 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl pointer-events-none transform-gpu" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">

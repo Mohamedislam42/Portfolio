@@ -1,7 +1,6 @@
 'use client';
 
-import React from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -17,37 +16,72 @@ export function ScrollReveal({
   className = '',
   delay = 0,
   direction = 'up',
-  duration = 0.5,
+  duration = 0.4,
   once = true,
 }: ScrollRevealProps) {
-  const shouldReduceMotion = useReducedMotion();
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
-  if (shouldReduceMotion) {
-    return <div className={className}>{children}</div>;
-  }
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
 
-  const directionOffsets = {
-    up: { y: 30, x: 0 },
-    down: { y: -30, x: 0 },
-    left: { x: 30, y: 0 },
-    right: { x: -30, y: 0 },
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          if (once) observer.unobserve(node);
+        } else if (!once) {
+          setIsVisible(false);
+        }
+      },
+      {
+        rootMargin: '0px 0px -40px 0px',
+        threshold: 0.05,
+      }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [once]);
+
+  const getTransform = () => {
+    if (isVisible) return 'translate3d(0, 0, 0)';
+    switch (direction) {
+      case 'up':
+        return 'translate3d(0, 18px, 0)';
+      case 'down':
+        return 'translate3d(0, -18px, 0)';
+      case 'left':
+        return 'translate3d(18px, 0, 0)';
+      case 'right':
+        return 'translate3d(-18px, 0, 0)';
+      default:
+        return 'translate3d(0, 18px, 0)';
+    }
   };
 
-  const initialOffset = directionOffsets[direction];
-
   return (
-    <motion.div
-      initial={{ opacity: 0, ...initialOffset }}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once, margin: '-50px' }}
-      transition={{
-        duration,
-        delay,
-        ease: [0.25, 0.1, 0.25, 1],
+    <div
+      ref={ref}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: getTransform(),
+        transitionProperty: 'opacity, transform',
+        transitionDuration: `${duration}s`,
+        transitionDelay: `${delay}s`,
+        transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        willChange: isVisible ? 'auto' : 'opacity, transform',
       }}
       className={className}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
+

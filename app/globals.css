@@ -27,7 +27,6 @@
 @layer base {
   html, body {
     @apply bg-base text-fg font-body antialiased;
-    scroll-behavior: smooth;
     color: #FFFFFF;
   }
   
