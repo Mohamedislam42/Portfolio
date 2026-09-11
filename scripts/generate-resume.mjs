@@ -12,6 +12,7 @@ async function generateExactResume() {
   const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
   const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontOblique = await pdfDoc.embedFont(StandardFonts.HelveticaOblique);
+  const fontBoldOblique = await pdfDoc.embedFont(StandardFonts.HelveticaBoldOblique);
 
   const black = rgb(0.1, 0.1, 0.1);
   const blue = rgb(0.1, 0.35, 0.7);
@@ -39,24 +40,6 @@ async function generateExactResume() {
     }
     if (currentLine) lines.push(currentLine);
     return lines;
-  }
-
-  function drawHeading(page, title, y) {
-    page.drawText(title, {
-      x: margin,
-      y: y,
-      size: 10.5,
-      font: fontBold,
-      color: black,
-    });
-    const lineY = y - 4;
-    page.drawLine({
-      start: { x: margin, y: lineY },
-      end: { x: pageWidth - margin, y: lineY },
-      thickness: 0.8,
-      color: lineGray,
-    });
-    return lineY - 12;
   }
 
   // ==========================================
@@ -104,6 +87,24 @@ async function generateExactResume() {
   page1.drawText(githubText, { x: curX, y: y1, size: contactSize, font: fontRegular, color: blue });
   y1 -= 22;
 
+  function drawHeading(page, title, y) {
+    page.drawText(title, {
+      x: margin,
+      y: y,
+      size: 10.5,
+      font: fontBold,
+      color: black,
+    });
+    const lineY = y - 4;
+    page.drawLine({
+      start: { x: margin, y: lineY },
+      end: { x: pageWidth - margin, y: lineY },
+      thickness: 0.8,
+      color: lineGray,
+    });
+    return lineY - 12;
+  }
+
   // 1. PROFESSIONAL SUMMARY
   y1 = drawHeading(page1, 'PROFESSIONAL SUMMARY', y1);
   const summaryText = "Computer Science & AI student at Alamein International University with hands-on experience building intelligent systems, NLP pipelines, and full-stack AI applications. Proficient in Python, machine learning, deep learning, and REST API development, with practical exposure to containerized deployment, graph algorithms, and real-time systems. Demonstrated ability to deliver complete projects end-to-end from data preprocessing and model training to frontend integration and deployment. Seeking ML engineering roles to apply AI expertise in production environments.";
@@ -112,7 +113,7 @@ async function generateExactResume() {
     page1.drawText(line, { x: margin, y: y1, size: 9.5, font: fontRegular, color: darkGray });
     y1 -= 13;
   }
-  y1 -= 6;
+  y1 -= 8;
 
   // 2. EDUCATION
   y1 = drawHeading(page1, 'EDUCATION', y1);
@@ -149,57 +150,12 @@ async function generateExactResume() {
     page1.drawText(line, { x: margin + 8, y: y1, size: 9.5, font: fontRegular, color: darkGray });
     y1 -= 13;
   }
-  y1 -= 6;
+  y1 -= 8;
 
   // 3. EXPERIENCE
   y1 = drawHeading(page1, 'EXPERIENCE', y1);
 
-  // Exp 1: DEPI
-  page1.drawText('Agentic AI & Generative AI System Developer', {
-    x: margin,
-    y: y1,
-    size: 10,
-    font: fontBold,
-    color: black,
-  });
-  const exp0Date = 'Jul 2026 – Present';
-  const exp0DateW = fontOblique.widthOfTextAtSize(exp0Date, 9.5);
-  page1.drawText(exp0Date, {
-    x: pageWidth - margin - exp0DateW,
-    y: y1,
-    size: 9.5,
-    font: fontOblique,
-    color: darkGray,
-  });
-  y1 -= 13;
-
-  page1.drawText('Digital Egypt Pioneers Initiative (DEPI), Egypt — Hybrid', {
-    x: margin,
-    y: y1,
-    size: 9.5,
-    font: fontOblique,
-    color: darkGray,
-  });
-  y1 -= 14;
-
-  const exp0Bullets = [
-    '• Selected for DEPI, a government-backed national technical training initiative focused on building advanced digital skills for the Egyptian tech workforce.',
-    '• Currently developing hands-on expertise in agentic AI system architecture, LLM-based application design, and generative AI development workflows.',
-    '• Engaging with practical training covering AI agent orchestration, prompt engineering, and applied machine learning concepts as part of an intensive, project-based curriculum.',
-    '• Building foundational proficiency in tools and frameworks relevant to generative AI development (e.g., LangChain, RAG pipelines, LLMS).',
-  ];
-
-  for (const bullet of exp0Bullets) {
-    const lines = wrapText(bullet, contentWidth - 10, fontRegular, 9.5);
-    for (const line of lines) {
-      page1.drawText(line, { x: margin + 8, y: y1, size: 9.5, font: fontRegular, color: darkGray });
-      y1 -= 13;
-    }
-    y1 -= 2;
-  }
-  y1 -= 6;
-
-  // Exp 2: Game Dev
+  // Exp 1: Game Dev
   page1.drawText('Game Development & Animation Intern', {
     x: margin,
     y: y1,
@@ -244,7 +200,7 @@ async function generateExactResume() {
   }
   y1 -= 6;
 
-  // Exp 3: ITI
+  // Exp 2: ITI
   page1.drawText('Software Development Trainee', {
     x: margin,
     y: y1,
@@ -289,8 +245,26 @@ async function generateExactResume() {
   }
   y1 -= 6;
 
-  // 4. PROJECTS heading on Page 1
+  // 4. PROJECTS (Title and First Project heading on Page 1)
   y1 = drawHeading(page1, 'PROJECTS', y1);
+
+  const proj1Title = 'Efficient Sentiment Classification using GPT-2, LoRA & Knowledge Distillation';
+  const proj1Tech = ' | Python, PyTorch, HuggingFace Transformers, LoRA (PEFT)';
+  page1.drawText(proj1Title, {
+    x: margin,
+    y: y1,
+    size: 9.5,
+    font: fontBold,
+    color: black,
+  });
+  const proj1TitleW = fontBold.widthOfTextAtSize(proj1Title, 9.5);
+  page1.drawText(proj1Tech, {
+    x: margin + proj1TitleW,
+    y: y1,
+    size: 9,
+    font: fontOblique,
+    color: darkGray,
+  });
 
   // ==========================================
   // PAGE 2
@@ -298,26 +272,7 @@ async function generateExactResume() {
   const page2 = pdfDoc.addPage([pageWidth, pageHeight]);
   let y2 = pageHeight - 45;
 
-  // Proj 1
-  const proj1Title = 'Efficient Sentiment Classification using GPT-2, LoRA & Knowledge Distillation';
-  const proj1Tech = ' | Python, PyTorch, HuggingFace Transformers, LoRA (PEFT)';
-  page2.drawText(proj1Title, {
-    x: margin,
-    y: y2,
-    size: 9.5,
-    font: fontBold,
-    color: black,
-  });
-  const proj1TitleW = fontBold.widthOfTextAtSize(proj1Title, 9.5);
-  page2.drawText(proj1Tech, {
-    x: margin + proj1TitleW,
-    y: y2,
-    size: 9,
-    font: fontOblique,
-    color: darkGray,
-  });
-  y2 -= 15;
-
+  // Proj 1 bullets
   const proj1Bullets = [
     '• Designed a parameter-efficient NLP pipeline combining Low-Rank Adaptation (LoRA) with Teacher-Student Knowledge Distillation for sentiment classification, training only 2.15% of total parameters while retaining competitive performance.',
     '• Fine-tuned a full GPT-2 model as a teacher and distilled its knowledge into a LoRA-adapted DistilGPT-2 student using KL-divergence loss with label smoothing and Focal Loss for class imbalance.',
@@ -446,25 +401,18 @@ async function generateExactResume() {
   }
   y2 -= 6;
 
-  // 7. LANGUAGES heading on Page 2
+  // 7. LANGUAGES
   y2 = drawHeading(page2, 'LANGUAGES', y2);
-
-  // ==========================================
-  // PAGE 3
-  // ==========================================
-  const page3 = pdfDoc.addPage([pageWidth, pageHeight]);
-  let y3 = pageHeight - 45;
-
-  page3.drawText('Arabic: ', { x: margin, y: y3, size: 9.5, font: fontBold, color: black });
+  page2.drawText('Arabic: ', { x: margin, y: y2, size: 9.5, font: fontBold, color: black });
   const arW = fontBold.widthOfTextAtSize('Arabic: ', 9.5);
-  page3.drawText('Native', { x: margin + arW, y: y3, size: 9.5, font: fontRegular, color: darkGray });
+  page2.drawText('Native', { x: margin + arW, y: y2, size: 9.5, font: fontRegular, color: darkGray });
   
   const midX = margin + 120;
-  page3.drawText('|', { x: midX, y: y3, size: 9.5, font: fontRegular, color: darkGray });
+  page2.drawText('|', { x: midX, y: y2, size: 9.5, font: fontRegular, color: darkGray });
   
-  page3.drawText('English: ', { x: midX + 20, y: y3, size: 9.5, font: fontBold, color: black });
+  page2.drawText('English: ', { x: midX + 20, y: y2, size: 9.5, font: fontBold, color: black });
   const enW = fontBold.widthOfTextAtSize('English: ', 9.5);
-  page3.drawText('Fluent (Professional Working Proficiency)', { x: midX + 20 + enW, y: y3, size: 9.5, font: fontRegular, color: darkGray });
+  page2.drawText('Fluent (Professional Working Proficiency)', { x: midX + 20 + enW, y: y2, size: 9.5, font: fontRegular, color: darkGray });
 
   // Save to public/resume.pdf
   const pdfBytes = await pdfDoc.save();
@@ -473,7 +421,7 @@ async function generateExactResume() {
     fs.mkdirSync(publicDir, { recursive: true });
   }
   fs.writeFileSync(path.join(publicDir, 'resume.pdf'), pdfBytes);
-  console.log('Successfully generated EXACT 3-page public/resume.pdf from user provided document');
+  console.log('Successfully generated EXACT 2-page public/resume.pdf from user provided document');
 }
 
 generateExactResume().catch(console.error);
