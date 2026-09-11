@@ -147,14 +147,24 @@ export function Projects() {
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-2 rounded-lg bg-elevated border border-line text-fg-secondary hover:text-accent hover:border-accent/40 transition-colors"
+                          className={`px-2.5 py-1.5 rounded-lg border transition-all inline-flex items-center gap-1.5 text-xs font-mono ${
+                            link.type === 'demo'
+                              ? 'bg-accent/15 border-accent/40 text-accent hover:bg-accent/25 hover:border-accent shadow-glow-sm font-semibold'
+                              : 'bg-elevated border border-line text-fg-secondary hover:text-accent hover:border-accent/40'
+                          }`}
                           aria-label={link.label}
                           title={link.label}
                         >
                           {link.type === 'github' ? (
-                            <FontAwesomeIcon icon={faGithub} className="w-4 h-4" />
+                            <>
+                              <FontAwesomeIcon icon={faGithub} className="w-3.5 h-3.5" />
+                              <span className="hidden sm:inline text-[11px]">Code</span>
+                            </>
                           ) : (
-                            <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="w-4 h-4" />
+                            <>
+                              <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="w-3.5 h-3.5 text-accent" />
+                              <span className="text-[11px]">Live Demo</span>
+                            </>
                           )}
                         </a>
                       ))}

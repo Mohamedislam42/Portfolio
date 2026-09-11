@@ -151,44 +151,53 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               )}
 
               {/* Benchmark Results Table if present */}
-              {project.benchmarks && project.benchmarks.length > 0 && (
-                <section className="space-y-3">
-                  <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-accent flex items-center gap-2">
-                    <FontAwesomeIcon icon={faChartSimple} className="w-4 h-4" />
-                    Empirical Benchmarks & Comparisons
-                  </h3>
-                  <div className="overflow-x-auto rounded-xl border border-line bg-elevated/70">
-                    <table className="w-full text-left text-xs font-mono">
-                      <thead className="bg-surface border-b border-line text-fg-muted uppercase text-[11px]">
-                        <tr>
-                          <th className="py-3 px-4">Evaluation Metric</th>
-                          {project.benchmarks[0].baseline && <th className="py-3 px-4">Baseline Model</th>}
-                          {project.benchmarks[0].teacher && <th className="py-3 px-4">Full Teacher (GPT-2)</th>}
-                          <th className="py-3 px-4 text-accent">Student (LoRA / Distilled)</th>
-                          {project.benchmarks[0].delta && <th className="py-3 px-4">Performance Delta</th>}
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-line/60">
-                        {project.benchmarks.map((row, idx) => (
-                          <tr key={idx} className="hover:bg-surface/50 transition-colors">
-                            <td className="py-2.5 px-4 font-semibold text-fg">{row.metric}</td>
-                            {row.baseline && <td className="py-2.5 px-4 text-fg-secondary">{row.baseline}</td>}
-                            {row.teacher && <td className="py-2.5 px-4 text-fg-secondary">{row.teacher}</td>}
-                            <td className="py-2.5 px-4 text-accent font-bold">{row.student}</td>
-                            {row.delta && (
-                              <td className="py-2.5 px-4">
-                                <span className="px-2 py-0.5 rounded bg-accent/15 text-accent text-[11px]">
-                                  {row.delta}
-                                </span>
-                              </td>
-                            )}
+              {project.benchmarks && project.benchmarks.length > 0 && (() => {
+                const headers = 
+                  project.id === 'sentiment-classification'
+                    ? { baseline: 'Baseline Model', teacher: 'Full Teacher (GPT-2)', student: 'Student (LoRA / Distilled)', delta: 'Performance Delta' }
+                    : project.id === 'multi-agent-research-assistant'
+                    ? { baseline: 'Standard Single LLM', teacher: 'Prompting Only', student: 'Multi-Agent Pipeline (Groq + ddgs)', delta: 'Self-Verification Delta' }
+                    : { baseline: 'Baseline Model', teacher: 'Comparative Model', student: 'Optimized Engine', delta: 'Performance Delta' };
+
+                return (
+                  <section className="space-y-3">
+                    <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-accent flex items-center gap-2">
+                      <FontAwesomeIcon icon={faChartSimple} className="w-4 h-4" />
+                      Empirical Benchmarks & Comparisons
+                    </h3>
+                    <div className="overflow-x-auto rounded-xl border border-line bg-elevated/70">
+                      <table className="w-full text-left text-xs font-mono">
+                        <thead className="bg-surface border-b border-line text-fg-muted uppercase text-[11px]">
+                          <tr>
+                            <th className="py-3 px-4">Evaluation Metric</th>
+                            {project.benchmarks[0].baseline && <th className="py-3 px-4">{headers.baseline}</th>}
+                            {project.benchmarks[0].teacher && <th className="py-3 px-4">{headers.teacher}</th>}
+                            <th className="py-3 px-4 text-accent">{headers.student}</th>
+                            {project.benchmarks[0].delta && <th className="py-3 px-4">{headers.delta}</th>}
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-              )}
+                        </thead>
+                        <tbody className="divide-y divide-line/60">
+                          {project.benchmarks.map((row, idx) => (
+                            <tr key={idx} className="hover:bg-surface/50 transition-colors">
+                              <td className="py-2.5 px-4 font-semibold text-fg">{row.metric}</td>
+                              {row.baseline && <td className="py-2.5 px-4 text-fg-secondary">{row.baseline}</td>}
+                              {row.teacher && <td className="py-2.5 px-4 text-fg-secondary">{row.teacher}</td>}
+                              <td className="py-2.5 px-4 text-accent font-bold">{row.student}</td>
+                              {row.delta && (
+                                <td className="py-2.5 px-4">
+                                  <span className="px-2 py-0.5 rounded bg-accent/15 text-accent text-[11px]">
+                                    {row.delta}
+                                  </span>
+                                </td>
+                              )}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+                );
+              })()}
 
               {/* Results & Impact Summary Card */}
               {project.impact && (
@@ -224,7 +233,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   {project.links.map((link, i) => (
                     <Button
                       key={i}
-                      variant="primary"
+                      variant={link.type === 'demo' ? 'primary' : 'secondary'}
                       size="sm"
                       href={link.url}
                       target="_blank"

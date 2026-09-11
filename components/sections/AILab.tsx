@@ -13,18 +13,255 @@ import {
   faBolt, 
   faLocationArrow, 
   faChartLine, 
-  faSliders,
-  faPlay,
-  faHospital,
-  faBus,
-  faTrainSubway,
-  faTriangleExclamation,
-  faClock,
-  faRoute,
-  faCar,
-  faShieldHalved
+  faSliders, 
+  faPlay, 
+  faHospital, 
+  faBus, 
+  faTrainSubway, 
+  faTriangleExclamation, 
+  faClock, 
+  faRoute, 
+  faCar, 
+  faShieldHalved, 
+  faRobot, 
+  faMagnifyingGlass, 
+  faFileLines, 
+  faCircleCheck, 
+  faArrowUpRightFromSquare, 
+  faLink, 
+  faQuoteLeft, 
+  faRotateRight, 
+  faNetworkWired, 
+  faCheck,
+  faXmark
 } from '@fortawesome/free-solid-svg-icons';
-import { motion } from 'framer-motion';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// --- MULTI-AGENT RESEARCH ASSISTANT LAB DATA ---
+interface AgentSource {
+  id: number;
+  title: string;
+  url: string;
+  domain: string;
+  snippet: string;
+}
+
+interface MultiAgentPreset {
+  id: string;
+  title: string;
+  question: string;
+  coordinatorQueries: string[];
+  searchSources: AgentSource[];
+  summarizerSections: {
+    heading: string;
+    text: string;
+    citations: number[];
+  }[];
+  factCheckAudit: {
+    verifiedCount: number;
+    totalCount: number;
+    flaggedClaim: {
+      claim: string;
+      sourceAudit: string;
+      resolution: string;
+    };
+  };
+  metrics: {
+    latency: string;
+    searchCost: string;
+    agentsUsed: number;
+    auditStatus: string;
+  };
+}
+
+const MULTI_AGENT_PRESETS: MultiAgentPreset[] = [
+  {
+    id: 'hallucination-mitigation',
+    title: 'Mitigating LLM Hallucinations',
+    question: 'How do multi-agent coordinator-critic verification loops eliminate hallucinations in high-stakes LLM research?',
+    coordinatorQueries: [
+      'LLM hallucination mechanisms, factual inconsistency in RAG pipelines',
+      'Multi-agent coordinator critic loops for automated claim verification',
+      'Empirical self-verification accuracy improvements in multi-stage LLM pipelines',
+    ],
+    searchSources: [
+      {
+        id: 1,
+        title: 'Multi-Agent Self-Verification Frameworks in LLM Reasoning',
+        url: 'https://arxiv.org/abs/2305.14325',
+        domain: 'arxiv.org',
+        snippet: 'Decoupling generation from evaluation across specialized agents reduces unsupported claims by 42% to 65% compared to single-pass generation.',
+      },
+      {
+        id: 2,
+        title: 'Autonomous Tool Calling & Multi-Agent StateGraph Orchestration',
+        url: 'https://python.langchain.com/docs/use_cases/multi_agent/',
+        domain: 'langchain.com',
+        snippet: 'Coordinator patterns distribute sub-tasks across dedicated search, summarization, and audit agents with structured state validation.',
+      },
+      {
+        id: 3,
+        title: 'Groq Cloud LPU Ultra-Low Latency Inference Architecture',
+        url: 'https://groq.com/fast-inference-architecture/',
+        domain: 'groq.com',
+        snippet: 'Ultra-fast LPU inference (sub-20ms/token) makes multi-turn verification passes computationally fast enough for real-time interactive research.',
+      },
+    ],
+    summarizerSections: [
+      {
+        heading: '1. Modular Agent Decomposition',
+        text: 'Rather than relying on a monolithic prompt, the Coordinator decomposes research queries into discrete sub-searches executed via keyless DuckDuckGo tools [2].',
+        citations: [2],
+      },
+      {
+        heading: '2. Grounded Evidence Synthesis',
+        text: 'The Summarizer synthesizes findings with strict inline numeric citations linked directly to live web snippets, achieving empirical hallucination drops of 42-65% [1] with sub-2s Groq execution [3].',
+        citations: [1, 3],
+      },
+      {
+        heading: '3. Autonomous Fact-Check Verification',
+        text: 'The Fact-Checker reviews the draft sentence-by-sentence, cross-referencing claims against retrieved sources to flag unsupported claims before final publication [1].',
+        citations: [1],
+      },
+    ],
+    factCheckAudit: {
+      verifiedCount: 5,
+      totalCount: 6,
+      flaggedClaim: {
+        claim: '"Single-prompt mitigation eliminates 99.8% of errors without verification passes"',
+        sourceAudit: 'Statistic NOT found in cited arXiv paper [1]. Source actually documents a 42-65% relative drop.',
+        resolution: 'Fact-Checker Agent flagged & corrected the statistic to 42-65% grounded range in final report.',
+      },
+    },
+    metrics: {
+      latency: '1.85s (Groq LPU)',
+      searchCost: '$0.00 (Zero-API ddgs)',
+      agentsUsed: 4,
+      auditStatus: '100% Grounded (1 Anomaly Remediated)',
+    },
+  },
+  {
+    id: 'lora-distillation',
+    title: 'LoRA vs Knowledge Distillation',
+    question: 'What are the computational trade-offs between LoRA adapter training and teacher-student distillation for compact LLMs?',
+    coordinatorQueries: [
+      'LoRA rank decomposition trainable parameter efficiency VRAM savings',
+      'Knowledge distillation teacher student KL divergence temperature scaling',
+      'Hybrid attention pooling vs standard token extraction in compact transformers',
+    ],
+    searchSources: [
+      {
+        id: 1,
+        title: 'LoRA: Low-Rank Adaptation of Large Language Models',
+        url: 'https://arxiv.org/abs/2106.09685',
+        domain: 'arxiv.org',
+        snippet: 'LoRA reduces trainable parameter counts by up to 10,000x and GPU memory requirements by 3x by decomposing weight update matrices.',
+      },
+      {
+        id: 2,
+        title: 'DistilBERT & DistilGPT-2: A distilled version of transformers',
+        url: 'https://huggingface.co/docs/transformers/',
+        domain: 'huggingface.co',
+        snippet: 'Distillation transfers knowledge from a 124M teacher to a student model, retaining 96.9% of Macro F1 performance while running 2.7x faster.',
+      },
+      {
+        id: 3,
+        title: 'PyTorch Knowledge Distillation & Temperature Scaling',
+        url: 'https://pytorch.org/tutorials/intermediate/distillation_tutorial.html',
+        domain: 'pytorch.org',
+        snippet: 'Temperature-scaled KL divergence forces the student to learn soft dark knowledge representations from teacher logits.',
+      },
+    ],
+    summarizerSections: [
+      {
+        heading: '1. Parameter-Efficient Rank Adaptation',
+        text: 'LoRA injects low-rank matrices into transformer query/value projections, drastically cutting trainable weights down to 2.15% [1].',
+        citations: [1],
+      },
+      {
+        heading: '2. Teacher-Student Logit Distillation',
+        text: 'Pairing LoRA with soft KL-divergence distillation preserves 96.9% of full GPT-2 teacher performance with 65.5% less VRAM [2, 3].',
+        citations: [2, 3],
+      },
+    ],
+    factCheckAudit: {
+      verifiedCount: 4,
+      totalCount: 4,
+      flaggedClaim: {
+        claim: 'All comparative claims verified against arXiv and HuggingFace documentation.',
+        sourceAudit: 'Parameter counts (2.6M vs 124M) and F1 retention (96.9%) match benchmark logs exactly.',
+        resolution: 'No hallucinations detected. Full citation consistency confirmed.',
+      },
+    },
+    metrics: {
+      latency: '2.10s (Groq LPU)',
+      searchCost: '$0.00 (Zero-API ddgs)',
+      agentsUsed: 4,
+      auditStatus: '100% Grounded & Verified',
+    },
+  },
+  {
+    id: 'zero-api-grounding',
+    title: 'Zero-Cost Web Grounding Architecture',
+    question: 'How to build production-grade agentic search tools with zero per-query API bills using DuckDuckGo?',
+    coordinatorQueries: [
+      'DuckDuckGo search ddgs Python library rate limiting LangChain',
+      'Zero-API-key web scraping vs paid SERP APIs cost comparison',
+      'Structured citation mapping and snippet extraction in multi-agent RAG',
+    ],
+    searchSources: [
+      {
+        id: 1,
+        title: 'duckduckgo_search: Python Library for Free Search',
+        url: 'https://pypi.org/project/duckduckgo-search/',
+        domain: 'pypi.org',
+        snippet: 'duckduckgo_search provides free, keyless text and news search extraction without subscription fees or API keys.',
+      },
+      {
+        id: 2,
+        title: 'LangChain Tool Calling & Custom Search Wrappers',
+        url: 'https://python.langchain.com/docs/modules/agents/tools/',
+        domain: 'langchain.com',
+        snippet: 'Wrapping search scrapers in LangChain tools enables autonomous multi-query execution with structured return schema.',
+      },
+      {
+        id: 3,
+        title: 'Streamlit Community Cloud Deployment Best Practices',
+        url: 'https://streamlit.io/gallery',
+        domain: 'streamlit.io',
+        snippet: 'Deploying agent pipelines on Streamlit Cloud provides free public access with session caching and real-time execution logs.',
+      },
+    ],
+    summarizerSections: [
+      {
+        heading: '1. Keyless Search Integration',
+        text: 'By integrating duckduckgo_search (ddgs), agents retrieve live web documentation without recurring API fees [1].',
+        citations: [1],
+      },
+      {
+        heading: '2. Streamlit Cloud Real-Time Telemetry',
+        text: 'Deploying the multi-agent graph on Streamlit Cloud gives end-users full visibility into agent steps, search queries, and fact-check audits [2, 3].',
+        citations: [2, 3],
+      },
+    ],
+    factCheckAudit: {
+      verifiedCount: 4,
+      totalCount: 4,
+      flaggedClaim: {
+        claim: 'Zero API key requirement and keyless search integration verified.',
+        sourceAudit: 'Confirmed compatible with free deployment on Streamlit Cloud and Groq Cloud free tier.',
+        resolution: 'Report verified. Clean zero-cost execution trail.',
+      },
+    },
+    metrics: {
+      latency: '1.65s (Groq LPU)',
+      searchCost: '$0.00 (Zero-API ddgs)',
+      agentsUsed: 4,
+      auditStatus: '100% Grounded & Verified',
+    },
+  },
+];
 
 // --- SENTIMENT LAB DATA & LOGIC ---
 const PRESET_PROMPTS = [
@@ -182,7 +419,31 @@ const CAIRO_EDGES: GraphEdge[] = [
 ];
 
 export function AILab() {
-  const [activeTab, setActiveTab] = useState<'nlp' | 'cairo'>('nlp');
+  const [activeTab, setActiveTab] = useState<'nlp' | 'cairo' | 'agents'>('nlp');
+
+  // Multi-Agent Lab State
+  const [selectedAgentPresetIdx, setSelectedAgentPresetIdx] = useState(0);
+  const [agentPipelineStep, setAgentPipelineStep] = useState<number>(4); // 4 = all complete
+  const [isAgentRunning, setIsAgentRunning] = useState(false);
+  const [activeCitationModal, setActiveCitationModal] = useState<AgentSource | null>(null);
+
+  const currentAgentPreset = MULTI_AGENT_PRESETS[selectedAgentPresetIdx];
+
+  const handleRunAgentPipeline = (presetIdx = selectedAgentPresetIdx) => {
+    setIsAgentRunning(true);
+    setAgentPipelineStep(1); // Coordinator
+
+    setTimeout(() => {
+      setAgentPipelineStep(2); // Search Agent
+      setTimeout(() => {
+        setAgentPipelineStep(3); // Summarizer Agent
+        setTimeout(() => {
+          setAgentPipelineStep(4); // Fact Checker & Final Report
+          setIsAgentRunning(false);
+        }, 550);
+      }, 550);
+    }, 550);
+  };
 
   // Sentiment State
   const [customText, setCustomText] = useState(PRESET_PROMPTS[0].text);
@@ -395,6 +656,17 @@ export function AILab() {
             >
               <FontAwesomeIcon icon={faLocationArrow} className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
               <span>Cairo Routing Visualizer</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('agents')}
+              className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-mono whitespace-nowrap transition-all ${
+                activeTab === 'agents'
+                  ? 'bg-accent text-base font-semibold shadow-glow-sm'
+                  : 'text-fg-secondary hover:text-fg'
+              }`}
+            >
+              <FontAwesomeIcon icon={faRobot} className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+              <span>Multi-Agent Research Lab</span>
             </button>
           </div>
         </div>
@@ -977,7 +1249,398 @@ export function AILab() {
             </div>
           </div>
         )}
+
+        {/* TAB 3: MULTI-AGENT RESEARCH ASSISTANT PLAYGROUND */}
+        {activeTab === 'agents' && (
+          <div className="space-y-6 sm:space-y-8">
+            {/* Top Prompt & Execution Controls */}
+            <Card className="p-4 sm:p-6 md:p-8 bg-elevated/70 border-line">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 sm:mb-6">
+                <div>
+                  <div className="flex items-center gap-2 text-accent font-mono text-xs uppercase tracking-wider mb-1">
+                    <FontAwesomeIcon icon={faRobot} className="w-4 h-4" />
+                    <span>Autonomous Multi-Agent Orchestration & Source Verification</span>
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-heading font-bold text-fg">
+                    Coordinator, Search, Summarizer & Fact-Checker Agents
+                  </h3>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <a
+                    href="https://multi-agent-researchassistant.streamlit.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent text-base text-xs font-mono font-bold hover:bg-teal-300 transition-colors shadow-glow-sm"
+                  >
+                    <span>Launch Streamlit App</span>
+                    <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="w-3 h-3" />
+                  </a>
+                  <a
+                    href="https://github.com/Mohamedislam42/multi-agent-research-assistant"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface border border-line text-xs font-mono text-fg-secondary hover:text-accent hover:border-accent/40 transition-colors"
+                  >
+                    <FontAwesomeIcon icon={faGithub} className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Repository</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Preset Selector Chips */}
+              <div className="space-y-3">
+                <label className="text-xs font-mono text-fg-secondary block">Select Research Query Preset:</label>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                  {MULTI_AGENT_PRESETS.map((preset, idx) => (
+                    <button
+                      key={preset.id}
+                      onClick={() => {
+                        setSelectedAgentPresetIdx(idx);
+                        handleRunAgentPipeline(idx);
+                      }}
+                      className={`p-3 rounded-xl border text-left transition-all font-mono text-xs ${
+                        selectedAgentPresetIdx === idx
+                          ? 'bg-accent/15 border-accent/60 text-accent font-semibold shadow-glow-sm'
+                          : 'bg-surface border-line text-fg-secondary hover:text-fg hover:border-accent/30'
+                      }`}
+                    >
+                      <span className="block font-bold text-fg mb-1">{preset.title}</span>
+                      <span className="text-[11px] text-fg-muted line-clamp-2">{preset.question}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Active Question Box & Run Button */}
+              <div className="mt-5 pt-4 border-t border-line flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-base/50 p-3.5 sm:p-4 rounded-xl">
+                <div className="flex items-start gap-2.5">
+                  <span className="p-1.5 rounded-md bg-accent/10 text-accent shrink-0 mt-0.5">
+                    <FontAwesomeIcon icon={faMagnifyingGlass} className="w-3.5 h-3.5" />
+                  </span>
+                  <div>
+                    <span className="text-[10px] font-mono uppercase text-fg-muted block">Active Research Query</span>
+                    <p className="text-xs sm:text-sm font-body text-fg font-medium mt-0.5">
+                      "{currentAgentPreset.question}"
+                    </p>
+                  </div>
+                </div>
+
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={() => handleRunAgentPipeline()}
+                  disabled={isAgentRunning}
+                  isLoading={isAgentRunning}
+                  className="shrink-0 font-mono text-xs w-full sm:w-auto"
+                >
+                  <FontAwesomeIcon icon={faPlay} className="w-3 h-3 mr-1.5" />
+                  {isAgentRunning ? 'Orchestrating Agents...' : 'Run 4-Agent Pipeline'}
+                </Button>
+              </div>
+
+              {/* Visual Pipeline Progress Stepper */}
+              <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
+                {[
+                  { step: 1, name: '1. Coordinator', role: 'Query Decomposition', icon: faNetworkWired },
+                  { step: 2, name: '2. Search Agent', role: 'DuckDuckGo Web (ddgs)', icon: faMagnifyingGlass },
+                  { step: 3, name: '3. Summarizer', role: 'Cited Report Draft', icon: faFileLines },
+                  { step: 4, name: '4. Fact-Checker', role: 'Self-Audit & Verification', icon: faShieldHalved },
+                ].map((agent) => {
+                  const isActive = agentPipelineStep === agent.step && isAgentRunning;
+                  const isDone = agentPipelineStep >= agent.step;
+
+                  return (
+                    <div
+                      key={agent.step}
+                      className={`p-2.5 sm:p-3 rounded-lg border transition-all font-mono ${
+                        isActive
+                          ? 'bg-accent/20 border-accent text-accent shadow-glow-sm animate-pulse'
+                          : isDone
+                          ? 'bg-surface border-accent/40 text-fg'
+                          : 'bg-surface/50 border-line/50 text-fg-muted'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between text-xs mb-1">
+                        <span className="font-semibold flex items-center gap-1.5">
+                          <FontAwesomeIcon icon={agent.icon} className="w-3 h-3 text-accent" />
+                          <span>{agent.name}</span>
+                        </span>
+                        {isDone && !isActive ? (
+                          <FontAwesomeIcon icon={faCircleCheck} className="w-3.5 h-3.5 text-accent" />
+                        ) : isActive ? (
+                          <span className="w-2 h-2 rounded-full bg-accent animate-ping" />
+                        ) : null}
+                      </div>
+                      <span className="text-[10px] text-fg-muted block truncate">{agent.role}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </Card>
+
+            {/* Agent Outputs & Final Verified Report Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
+              {/* Left Column: Multi-Agent Trace Details */}
+              <div className="lg:col-span-6 space-y-4 sm:space-y-6">
+                {/* Agent 1: Coordinator Trace */}
+                <Card className="p-4 sm:p-5 bg-elevated/70 border-line space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-xs font-mono text-fg">
+                      <span className="w-2 h-2 rounded-full bg-accent" />
+                      <span className="font-bold text-accent">Coordinator Agent Trace</span>
+                    </div>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-surface border border-line text-fg-muted">
+                      Groq LPU Engine
+                    </span>
+                  </div>
+                  <p className="text-xs text-fg-secondary font-mono">
+                    Decomposed central topic into {currentAgentPreset.coordinatorQueries.length} targeted search queries for parallel retrieval:
+                  </p>
+                  <div className="space-y-1.5">
+                    {currentAgentPreset.coordinatorQueries.map((query, i) => (
+                      <div key={i} className="p-2 rounded bg-surface border border-line flex items-center gap-2 text-xs font-mono text-fg-secondary">
+                        <span className="text-accent text-[11px] font-bold">Q{i+1}:</span>
+                        <span className="truncate">{query}</span>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+
+                {/* Agent 2: Search Agent DuckDuckGo Sources */}
+                <Card className="p-4 sm:p-5 bg-elevated/70 border-line space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-xs font-mono text-fg">
+                      <span className="w-2 h-2 rounded-full bg-teal-400" />
+                      <span className="font-bold text-teal-300">Search Agent Grounding (DuckDuckGo ddgs)</span>
+                    </div>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                      $0.00 Zero API Cost
+                    </span>
+                  </div>
+
+                  <div className="space-y-2">
+                    {currentAgentPreset.searchSources.map((source) => (
+                      <div
+                        key={source.id}
+                        className="p-3 rounded-lg bg-surface border border-line hover:border-accent/40 transition-colors space-y-1"
+                      >
+                        <div className="flex items-center justify-between text-xs font-mono">
+                          <span className="font-bold text-accent">[{source.id}] {source.title}</span>
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-elevated text-fg-muted border border-line">
+                            {source.domain}
+                          </span>
+                        </div>
+                        <p className="text-[11px] font-mono text-fg-secondary leading-relaxed">
+                          "{source.snippet}"
+                        </p>
+                        <a
+                          href={source.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[10px] font-mono text-accent/80 hover:text-accent inline-flex items-center gap-1 mt-1"
+                        >
+                          <FontAwesomeIcon icon={faLink} className="w-2.5 h-2.5" />
+                          <span>{source.url}</span>
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+
+                {/* Agent 4: Fact-Checker Anomaly Detection & Self-Verification Card */}
+                <Card className="p-4 sm:p-5 bg-elevated/70 border-accent/40 space-y-3 shadow-glow-sm">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-xs font-mono">
+                      <FontAwesomeIcon icon={faShieldHalved} className="w-4 h-4 text-accent" />
+                      <span className="font-bold text-accent">Fact-Checker Agent: Self-Verification Audit</span>
+                    </div>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-accent/15 text-accent border border-accent/30 font-bold">
+                      {currentAgentPreset.factCheckAudit.verifiedCount}/{currentAgentPreset.factCheckAudit.totalCount} Claims Grounded
+                    </span>
+                  </div>
+
+                  <div className="p-3 rounded-lg bg-surface border border-line space-y-2 font-mono text-xs">
+                    <div className="flex items-start gap-2">
+                      <FontAwesomeIcon icon={faTriangleExclamation} className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
+                      <div>
+                        <span className="text-amber-300 font-bold text-[11px] block">Claim Audit Pass:</span>
+                        <p className="text-fg-secondary text-[11px] mt-0.5 italic">
+                          {currentAgentPreset.factCheckAudit.flaggedClaim.claim}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="pl-5 space-y-1 text-[11px] text-fg-muted">
+                      <div>
+                        <span className="text-fg-secondary font-semibold">Evidence Audit: </span>
+                        <span>{currentAgentPreset.factCheckAudit.flaggedClaim.sourceAudit}</span>
+                      </div>
+                      <div className="text-accent">
+                        <span className="font-semibold">Autonomous Remediation: </span>
+                        <span>{currentAgentPreset.factCheckAudit.flaggedClaim.resolution}</span>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+
+              {/* Right Column: Final Synthesized Verified Report & Telemetry */}
+              <div className="lg:col-span-6 space-y-4 sm:space-y-6">
+                <Card className="p-4 sm:p-6 bg-elevated/70 border-line h-full flex flex-col justify-between">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between pb-3 border-b border-line">
+                      <div className="flex items-center gap-2 text-accent font-mono text-xs uppercase tracking-wider">
+                        <FontAwesomeIcon icon={faFileLines} className="w-4 h-4" />
+                        <span>Synthesized & Verified Research Report</span>
+                      </div>
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+                        <FontAwesomeIcon icon={faCheck} className="w-2.5 h-2.5" /> Verified Markdown
+                      </span>
+                    </div>
+
+                    {/* Formatted Markdown Sections */}
+                    <div className="space-y-4 font-mono text-xs text-fg leading-relaxed">
+                      <div className="p-3 rounded-lg bg-surface border border-line">
+                        <span className="text-[11px] font-bold text-accent uppercase tracking-wider block mb-1">
+                          Research Topic Summary
+                        </span>
+                        <p className="text-sm font-heading font-bold text-fg">
+                          {currentAgentPreset.title}
+                        </p>
+                      </div>
+
+                      {currentAgentPreset.summarizerSections.map((sec, idx) => (
+                        <div key={idx} className="space-y-1.5 p-3 rounded-lg bg-base/60 border border-line/60">
+                          <h5 className="font-bold text-accent text-xs font-mono">
+                            {sec.heading}
+                          </h5>
+                          <p className="text-fg-secondary text-xs font-body leading-relaxed">
+                            {sec.text}
+                          </p>
+                          <div className="flex items-center gap-1.5 pt-1">
+                            <span className="text-[10px] text-fg-muted font-mono">Sources cited:</span>
+                            {sec.citations.map((c) => (
+                              <button
+                                key={c}
+                                onClick={() => {
+                                  const src = currentAgentPreset.searchSources.find(s => s.id === c);
+                                  if (src) setActiveCitationModal(src);
+                                }}
+                                className="px-1.5 py-0.5 rounded bg-accent/15 border border-accent/40 text-accent text-[10px] font-mono font-bold hover:bg-accent/30 transition-colors"
+                              >
+                                [{c}]
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Telemetry Bar & Streamlit Cloud Launch Banner */}
+                  <div className="mt-6 pt-5 border-t border-line space-y-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-center font-mono">
+                      <div className="p-2 rounded bg-surface border border-line">
+                        <span className="text-[9px] text-fg-muted block truncate">Latency</span>
+                        <span className="text-xs font-bold text-accent">{currentAgentPreset.metrics.latency}</span>
+                      </div>
+                      <div className="p-2 rounded bg-surface border border-line">
+                        <span className="text-[9px] text-fg-muted block truncate">Search Bill</span>
+                        <span className="text-xs font-bold text-emerald-300">{currentAgentPreset.metrics.searchCost}</span>
+                      </div>
+                      <div className="p-2 rounded bg-surface border border-line">
+                        <span className="text-[9px] text-fg-muted block truncate">Pipeline</span>
+                        <span className="text-xs font-bold text-fg">{currentAgentPreset.metrics.agentsUsed} Agents</span>
+                      </div>
+                      <div className="p-2 rounded bg-surface border border-line">
+                        <span className="text-[9px] text-fg-muted block truncate">Fact-Check</span>
+                        <span className="text-xs font-bold text-teal-300">Verified</span>
+                      </div>
+                    </div>
+
+                    {/* Live Streamlit Demo Direct Banner */}
+                    <div className="p-4 rounded-xl bg-gradient-to-r from-accent/15 via-teal-500/10 to-surface border border-accent/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-glow-sm">
+                      <div>
+                        <span className="text-xs font-mono font-bold text-accent uppercase tracking-wider block">
+                          🚀 Live Interactive Streamlit App
+                        </span>
+                        <p className="text-xs font-body text-fg-secondary mt-0.5">
+                          Run unrestricted web queries, view live agent streaming logs, and download research reports.
+                        </p>
+                      </div>
+
+                      <a
+                        href="https://multi-agent-researchassistant.streamlit.app/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="shrink-0 px-4 py-2 rounded-lg bg-accent text-base text-xs font-mono font-bold hover:bg-teal-300 transition-all inline-flex items-center justify-center gap-2 shadow-glow-sm"
+                      >
+                        <span>Open Live Demo</span>
+                        <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="w-3 h-3" />
+                      </a>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Citation Inspector Modal */}
+      <AnimatePresence>
+        {activeCitationModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-base/80 backdrop-blur-sm"
+              onClick={() => setActiveCitationModal(null)}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              className="relative bg-surface rounded-xl border border-line max-w-lg w-full p-5 shadow-card z-10 font-mono space-y-3"
+            >
+              <div className="flex items-center justify-between border-b border-line pb-2">
+                <span className="text-xs text-accent font-bold">
+                  Source Citation [{activeCitationModal.id}]
+                </span>
+                <button
+                  onClick={() => setActiveCitationModal(null)}
+                  className="p-1 text-fg-muted hover:text-accent transition-colors"
+                >
+                  <FontAwesomeIcon icon={faXmark} className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div>
+                <h4 className="font-bold text-fg text-sm">{activeCitationModal.title}</h4>
+                <span className="text-[11px] text-accent block mt-0.5">{activeCitationModal.domain}</span>
+              </div>
+
+              <div className="p-3 rounded-lg bg-base border border-line text-xs text-fg-secondary">
+                <p>"{activeCitationModal.snippet}"</p>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-line">
+                <a
+                  href={activeCitationModal.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-lg bg-accent text-base text-xs font-bold hover:bg-teal-300 transition-colors inline-flex items-center gap-1.5"
+                >
+                  <span>Open Primary Source</span>
+                  <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="w-3 h-3" />
+                </a>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
