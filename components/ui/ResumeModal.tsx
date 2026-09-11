@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark, faDownload, faPrint, faGraduationCap, faBriefcase, faCode, faAward, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { faXmark, faDownload, faPrint, faGraduationCap, faBriefcase, faCode, faAward, faArrowUpRightFromSquare, faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/ui/Button';
 import { education, experiences } from '@/data/experience';
 import { projects } from '@/data/projects';
@@ -92,11 +92,24 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                 </div>
                 <div className="text-xs font-mono text-fg-secondary space-y-1 md:text-right shrink-0">
                   <p>Alexandria, Egypt</p>
-                  <p className="whitespace-nowrap">info.moislam@gmail.com</p>
                   <p className="whitespace-nowrap">+20 128 080 6343</p>
-                  <p className="whitespace-nowrap">github.com/Mohamedislam42</p>
+                  <p className="whitespace-nowrap">
+                    <a href="https://linkedin.com/in/mohamed-islam42" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">LinkedIn</a>
+                    {' | '}
+                    <a href="https://github.com/Mohamedislam42" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">GitHub</a>
+                  </p>
                 </div>
               </div>
+
+              {/* Professional Summary */}
+              <section className="space-y-2">
+                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-accent">
+                  Professional Summary
+                </h3>
+                <p className="text-xs sm:text-sm text-fg-secondary leading-relaxed bg-surface p-4 rounded-xl border border-line">
+                  Computer Science & AI student at Alamein International University with hands-on experience building intelligent systems, NLP pipelines, and full-stack AI applications. Proficient in Python, machine learning, deep learning, and REST API development, with practical exposure to containerized deployment, graph algorithms, and real-time systems. Demonstrated ability to deliver complete projects end-to-end from data preprocessing and model training to frontend integration and deployment. Seeking ML engineering roles to apply AI expertise in production environments.
+                </p>
+              </section>
 
               {/* Education */}
               <section className="space-y-3">
@@ -219,6 +232,23 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                       <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="w-3.5 h-3.5 text-fg-muted group-hover:text-accent shrink-0 ml-2" />
                     </a>
                   ))}
+                </div>
+              </section>
+
+              {/* Languages */}
+              <section className="space-y-3">
+                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-accent flex items-center gap-2">
+                  <FontAwesomeIcon icon={faGlobe} className="w-4 h-4" />
+                  Languages
+                </h3>
+                <div className="p-3 rounded-lg bg-surface border border-line flex flex-wrap items-center gap-6 text-xs">
+                  <div>
+                    <span className="font-bold text-fg">Arabic:</span> <span className="text-fg-secondary">Native</span>
+                  </div>
+                  <div className="text-line">|</div>
+                  <div>
+                    <span className="font-bold text-fg">English:</span> <span className="text-fg-secondary">Fluent (Professional Working Proficiency)</span>
+                  </div>
                 </div>
               </section>
             </div>
