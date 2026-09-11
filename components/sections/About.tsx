@@ -57,7 +57,7 @@ export function About() {
             <ScrollReveal>
               <SectionHeading index={1} kicker="About Me" title="Turning Research into Deployed Intelligence" />
               
-              <div className="text-sm sm:text-base md:text-lg text-slate-300 text-fg-secondary space-y-3.5 sm:space-y-4 mt-4 sm:mt-6 leading-relaxed">
+              <div className="text-sm sm:text-base md:text-lg text-fg-secondary space-y-3.5 sm:space-y-4 mt-4 sm:mt-6 leading-relaxed">
                 <p>
                   I'm a Computer Science & AI student at Al Alamein International University, graduating in 2027, focused on building AI systems that actually run — not just models in a notebook, but the full path from data to something deployed and usable.
                 </p>
