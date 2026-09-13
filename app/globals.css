@@ -25,9 +25,14 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   html, body {
     @apply bg-base text-fg font-body antialiased;
     color: #FFFFFF;
+    text-rendering: optimizeLegibility;
   }
   
   p {
@@ -35,7 +40,7 @@
   }
   
   @media (prefers-reduced-motion: reduce) {
-    html, body {
+    html {
       scroll-behavior: auto;
     }
     *, ::before, ::after {

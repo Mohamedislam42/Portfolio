@@ -10,7 +10,7 @@ export function useScrollSpy(sectionIds: string[], offset: number = 80): string 
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
+            setActiveSection((prev) => (prev !== entry.target.id ? entry.target.id : prev));
           }
         });
       },

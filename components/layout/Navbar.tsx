@@ -9,6 +9,8 @@ import { useScrollSpy } from '@/lib/hooks/useScrollSpy';
 import { Button } from '@/components/ui/Button';
 import { MobileMenu } from './MobileMenu';
 
+const SECTION_IDS = navLinks.map((link) => (link.href.startsWith('#') ? link.href.slice(1) : link.href));
+
 interface NavbarProps {
   onOpenResume?: () => void;
 }
@@ -17,21 +19,22 @@ export function Navbar({ onOpenResume }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
-  const sectionIds = navLinks.map(link => link.href.startsWith('#') ? link.href.slice(1) : link.href);
-  const activeSection = useScrollSpy(sectionIds);
+  const activeSection = useScrollSpy(SECTION_IDS);
 
   useEffect(() => {
     let ticking = false;
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 40);
+          const past = window.scrollY > 40;
+          setIsScrolled((prev) => (prev !== past ? past : prev));
           ticking = false;
         });
         ticking = true;
       }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

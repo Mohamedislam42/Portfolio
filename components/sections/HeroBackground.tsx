@@ -23,78 +23,96 @@ export default function HeroBackground() {
     let animationFrameId: number;
     let particles: Particle[] = [];
     let isVisible = true;
+    let lastDrawTime = 0;
+    const targetFpsInterval = 1000 / 35; // Cap at smooth 35 FPS to eliminate CPU/GPU overhead
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      initParticles();
-      draw();
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+
+      initParticles(width, height);
+      draw(performance.now());
     };
 
-    const initParticles = () => {
+    const initParticles = (width: number, height: number) => {
       particles = [];
-      const width = canvas.width;
-      let count = 14; // mobile
-      if (width >= 1024) count = 28; // desktop
-      else if (width >= 768) count = 20; // tablet
+      let count = 12; // mobile
+      if (width >= 1024) count = 22; // desktop
+      else if (width >= 768) count = 16; // tablet
 
       for (let i = 0; i < count; i++) {
         particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.35,
-          vy: (Math.random() - 0.5) * 0.35,
-          radius: Math.random() > 0.8 ? 2.5 : 1.5,
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          radius: Math.random() > 0.8 ? 2 : 1.2,
         });
       }
     };
 
-    const threshold = 140;
+    const threshold = 130;
     const thresholdSq = threshold * threshold;
 
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const draw = (now: number) => {
+      if (!isVisible) return;
 
-      // Update positions if animation is enabled
-      if (!prefersReducedMotion) {
-        for (let i = 0; i < particles.length; i++) {
-          const p = particles[i];
-          p.x += p.vx;
-          p.y += p.vy;
+      const elapsed = now - lastDrawTime;
+      if (elapsed >= targetFpsInterval) {
+        lastDrawTime = now - (elapsed % targetFpsInterval);
 
-          if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-        }
-      }
+        const width = window.innerWidth;
+        const height = window.innerHeight;
 
-      // Draw edges with squared distance optimization (avoiding Math.sqrt)
-      ctx.lineWidth = 1;
-      for (let i = 0; i < particles.length; i++) {
-        const p1 = particles[i];
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const dx = p1.x - p2.x;
-          const dy = p1.y - p2.y;
-          const distSq = dx * dx + dy * dy;
+        ctx.clearRect(0, 0, width, height);
 
-          if (distSq < thresholdSq) {
-            const opacity = (1 - distSq / thresholdSq) * 0.12;
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(94, 234, 212, ${opacity})`;
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
+        // Update positions
+        if (!prefersReducedMotion) {
+          for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.x < 0 || p.x > width) p.vx *= -1;
+            if (p.y < 0 || p.y > height) p.vy *= -1;
           }
         }
-      }
 
-      // Draw nodes
-      ctx.fillStyle = `rgba(94, 234, 212, 0.4)`;
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
+        // Batch all edge line drawing into ONE single path stroke
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.lineWidth = 0.8;
+        ctx.strokeStyle = 'rgba(94, 234, 212, 0.08)';
+
+        for (let i = 0; i < particles.length; i++) {
+          const p1 = particles[i];
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dx = p1.x - p2.x;
+            const dy = p1.y - p2.y;
+            const distSq = dx * dx + dy * dy;
+
+            if (distSq < thresholdSq) {
+              ctx.moveTo(p1.x, p1.y);
+              ctx.lineTo(p2.x, p2.y);
+            }
+          }
+        }
+        ctx.stroke();
+
+        // Batch all particle node drawing into ONE single path fill
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(94, 234, 212, 0.35)';
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          ctx.moveTo(p.x + p.radius, p.y);
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        }
         ctx.fill();
       }
 
@@ -110,11 +128,12 @@ export default function HeroBackground() {
           isVisible = entry.isIntersecting;
           if (isVisible && !prefersReducedMotion) {
             cancelAnimationFrame(animationFrameId);
+            lastDrawTime = performance.now();
             animationFrameId = requestAnimationFrame(draw);
           }
         });
       },
-      { threshold: 0.05 }
+      { threshold: 0.01 }
     );
     observer.observe(canvas);
 
@@ -139,7 +158,7 @@ export default function HeroBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full opacity-40 pointer-events-none"
+      className="absolute inset-0 w-full h-full opacity-40 pointer-events-none transform-gpu"
       aria-hidden="true"
     />
   );

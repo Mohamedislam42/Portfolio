@@ -14,7 +14,7 @@ export function Card({
   glowOnHover = false,
 }: CardProps) {
   const baseStyles = 'bg-surface rounded-xl border border-line overflow-hidden';
-  const hoverableStyles = hoverable ? 'transition-all duration-300 hover:border-accent hover:-translate-y-1' : '';
+  const hoverableStyles = hoverable ? 'transition-all duration-300 hover:border-accent hover:-translate-y-1 transform-gpu' : '';
   const glowStyles = glowOnHover ? 'hover:shadow-glow' : '';
   
   const classes = `${baseStyles} ${hoverableStyles} ${glowStyles} ${className}`.trim();
