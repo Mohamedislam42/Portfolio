@@ -1268,7 +1268,7 @@ export function AILab() {
 
                 <div className="flex flex-wrap items-center gap-2">
                   <a
-                    href="https://multi-agent-researchassistant.streamlit.app/"
+                    href="https://multiagent-research-assistant.streamlit.app/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent text-base text-xs font-mono font-bold hover:bg-teal-300 transition-colors shadow-glow-sm"
@@ -1571,7 +1571,7 @@ export function AILab() {
                       </div>
 
                       <a
-                        href="https://multi-agent-researchassistant.streamlit.app/"
+                        href="https://multiagent-research-assistant.streamlit.app/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="shrink-0 px-4 py-2 rounded-lg bg-accent text-base text-xs font-mono font-bold hover:bg-teal-300 transition-all inline-flex items-center justify-center gap-2 shadow-glow-sm"

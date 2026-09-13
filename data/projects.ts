@@ -167,7 +167,7 @@ export const projects: Project[] = [
     techStack: ['Python', 'LangChain', 'Groq (LLM inference)', 'DuckDuckGo Search (ddgs)', 'Streamlit'],
     links: [
       { type: 'github', url: 'https://github.com/Mohamedislam42/multi-agent-research-assistant', label: 'GitHub Repository' },
-      { type: 'demo', url: 'https://multi-agent-researchassistant.streamlit.app/', label: 'Live Demo' },
+      { type: 'demo', url: 'https://multiagent-research-assistant.streamlit.app/', label: 'Live Demo' },
     ],
     featured: true,
   },
