@@ -28,8 +28,8 @@ export function About() {
                     alt="Mohamed Islam Elshourbagy"
                     fill
                     sizes="(max-width: 640px) 280px, (max-width: 1024px) 340px, 400px"
-                    loading="lazy"
-                    className="object-cover object-top filter brightness-[1.02] contrast-[1.02] group-hover:scale-105 transition-transform duration-500"
+                    priority
+                    className="object-cover object-[center_25%] filter brightness-[1.02] contrast-[1.02] group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-base/60 via-transparent to-transparent opacity-60" />
                 </div>
